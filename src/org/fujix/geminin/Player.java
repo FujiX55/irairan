@@ -45,7 +45,7 @@ public class Player extends Task
 		_cir._y += _vec._y;
 	}
 	
-	// タッチされた方へ動かす
+	// 指定された場所へ動かす
 	public void MoveTo(float dest_x, float dest_y)
 	{
 		float distance_x = dest_x - _cir._x;
