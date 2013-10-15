@@ -3,15 +3,60 @@ package org.fujix.geminin;
 import android.app.*;
 import android.os.*;
 import android.view.*;
-import android.widget.*;
 
 public class MainActivity extends Activity
 {
+	GameSurfaceView _view;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//フルスクリーンに設定
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//画面のタイムアウト防止 
+
+		_view = new GameSurfaceView(this);
+		setContentView(_view);
+		AcSensor.GetInstance().onCreate(this); // センサー初期化
+    }
+
+	@Override
+	protected void onResume()
+	{	// アクティビティが動き始める時呼ばれる
+		super.onResume();
+		AcSensor.GetInstance().onResume();// 開始時にセンサーを動かし始める
+	}
+
+	@Override
+	protected void onPause()
+	{	// アクティビティの動きが止まる時呼ばれる
+		super.onPause();
+		AcSensor.GetInstance().onPause();// 中断時にセンサーを止める
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{	//ボタンが押された時に呼ばれる
+		return super.onKeyDown(keyCode, event);
+	}
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e)
+	{
+        switch (e.getAction())
+		{
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				break;
+			case MotionEvent.ACTION_MOVE:
+				break;
+        }
+        return true;
     }
 }
