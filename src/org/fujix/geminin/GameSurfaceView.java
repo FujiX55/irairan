@@ -70,6 +70,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
+				if (!_gameMgr.isFinished())
+				{
+					_gameMgr.movePlayer( e );
+				}
 				break;
         }
         return true;

@@ -44,6 +44,15 @@ public class Player extends Task
 		_cir._x += _vec._x;     //移動ベクトル_vecが指す方向に移動させる 
 		_cir._y += _vec._y;
 	}
+	
+	// タッチされた方へ動かす
+	public void MoveTo(float dest_x, float dest_y)
+	{
+		float distance_x = dest_x - _cir._x;
+		float distance_y = dest_y - _cir._y;
+		_cir._x = _cir._x  + distance_x / 10;	
+		_cir._y = _cir._y  + distance_y / 10;	
+	}
 
 	@Override
 	public boolean onUpdate()
