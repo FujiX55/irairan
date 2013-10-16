@@ -147,7 +147,7 @@ public class GameMgr
 	}
 
 	public boolean isFinished()
-	{
+	{	// ゲーム終了？
 		if (_status != eStatus.NORMAL)
 		{
 			return true;
@@ -155,8 +155,8 @@ public class GameMgr
 		return false;
 	}
 	
-	public void movePlayer(MotionEvent e)
+	public void movePlayer(PointF old, PointF now)
 	{	// 自機の移動
-		_player.MoveTo(e.getX(), e.getY());
-	}
+		_player.setMove(old, now);
+	}	
 }

@@ -8,6 +8,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 {
 	private GameMgr	_gameMgr = new GameMgr();
 	private Thread	_thread;
+	
+	private PointF _nowXY = new PointF();
+	private PointF _oldXY = new PointF();
 
 	public GameSurfaceView(Context context)
 	{
@@ -72,10 +75,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			case MotionEvent.ACTION_MOVE:
 				if (!_gameMgr.isFinished())
 				{
-					_gameMgr.movePlayer( e );
+					_nowXY.set(e.getX(), e.getY());
+					_gameMgr.movePlayer(_oldXY, _nowXY);
 				}
 				break;
-        }
+        }		
+		_oldXY.set(e.getX(), e.getY());
+		
         return true;
     }
 }

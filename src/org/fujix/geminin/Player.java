@@ -1,6 +1,7 @@
 package org.fujix.geminin;
 
 import android.graphics.*;
+import java.util.*;
 
 public class Player extends Task
 {
@@ -54,6 +55,16 @@ public class Player extends Task
 		_cir._y = _cir._y  + distance_y / 10;	
 	}
 
+	public void setMove(PointF old, PointF now)
+	{
+		float x = now.x - old.x;
+		float y = now.y - old.y;
+		_sensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
+		_sensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
+		_sensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
+		_vec.blend(_sensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
+	}
+	
 	@Override
 	public boolean onUpdate()
 	{
