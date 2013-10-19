@@ -4,6 +4,7 @@ import android.graphics.*;
 
 public class Barricade extends Task
 {
+	Path _path = new Path();
 
 	public enum eType
 	{ // 障害物のタイプ
@@ -76,12 +77,13 @@ public class Barricade extends Task
 		{ // 頂点が1未満なんて図形はありえない
 			return;
 		}
-		Path path = new Path();
-		path.moveTo(_pt[0].x, _pt[0].y); // パスの初期位置をセット
+//		Path path = new Path();
+		_path.reset();
+		_path.moveTo(_pt[0].x, _pt[0].y); // パスの初期位置をセット
 		for (int i = 0; i < _pt.length; i++)
 		{
-			path.lineTo(_pt[i].x, _pt[i].y); // 頂点の位置へラインを引いていく
+			_path.lineTo(_pt[i].x, _pt[i].y); // 頂点の位置へラインを引いていく
 		}
-		c.drawPath(path, _paint); // 引いたラインを描画する
+		c.drawPath(_path, _paint); // 引いたラインを描画する
 	}
 }

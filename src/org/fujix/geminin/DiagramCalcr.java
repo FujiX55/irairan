@@ -4,7 +4,8 @@ import android.graphics.*;
 
 public class DiagramCalcr
 {
-
+	static Line _line = new Line();
+	
 	//centerを中心に角度ang、頂点群ptを回転する
 	public static void RotateDiagram(PointF pt[], final PointF center, final float ang)
 	{
@@ -25,7 +26,7 @@ public class DiagramCalcr
 		rotaPt.y = (float) (cy + Math.sin(ang) * (x - cx) + Math.cos(ang) * (y - cy));
 	}
 
-	//頂点群ptの線分とcirが接触していたらその接触しているベクトルをverに格納して返す
+	//頂点群ptの線分とcirが接触していたらその接触しているベクトルをvecに格納して返す
 	public static boolean Collision(PointF pt[], final Circle cir, Vec vec)
 	{
 		if (pt.length < 2)
@@ -35,8 +36,10 @@ public class DiagramCalcr
 		int len = pt.length;
 		for (int i = 1; i <= len; i++)
 		{//例えば線分0-1,1-2,2-3,3-0とループさせてつなげる為%を使用してループ
-			Line line = new Line(pt[i - 1].x, pt[i - 1].y, pt[i % len].x, pt[i % len].y);
-			if (CollisionLC(line, cir) == true)
+//			Line line = new Line(pt[i - 1].x, pt[i - 1].y, pt[i % len].x, pt[i % len].y);
+			_line.Set(pt[i - 1].x, pt[i - 1].y, pt[i % len].x, pt[i % len].y);
+			
+			if (CollisionLC(_line, cir) == true)
 			{//接触していれば
 				vec._x = pt[i % len].x - pt[i - 1].x;//その線分のベクトルを格納する
 				vec._y = pt[i % len].y - pt[i - 1].y;

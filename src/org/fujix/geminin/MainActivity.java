@@ -2,6 +2,7 @@ package org.fujix.geminin;
 
 import android.app.*;
 import android.os.*;
+import android.util.*;
 import android.view.*;
 
 public class MainActivity extends Activity
@@ -25,6 +26,13 @@ public class MainActivity extends Activity
     }
 
 	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+//		System.exit(0);
+	}
+	
+	@Override
 	protected void onResume()
 	{	// アクティビティが動き始める時呼ばれる
 		super.onResume();
@@ -41,9 +49,15 @@ public class MainActivity extends Activity
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{	//ボタンが押された時に呼ばれる
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{	//戻るボタンなら
+			Log.d("MainActivity", "KEY_BACK!");
+			_view = null;
+			System.gc();
+		}
+		//それ以外のボタンなら標準の動きをさせる
 		return super.onKeyDown(keyCode, event);
 	}
-
 
     @Override
     public boolean onTouchEvent(MotionEvent e)

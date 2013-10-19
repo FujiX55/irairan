@@ -2,15 +2,16 @@ package org.fujix.geminin;
 
 import android.content.*;
 import android.graphics.*;
+import android.util.*;
 import android.view.*;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable
 {
-	private GameMgr	_gameMgr = new GameMgr();
+	private GameMgr	_gameMgr;// = new GameMgr();
 	private Thread	_thread;
-	
-	private PointF _nowXY = new PointF();
-	private PointF _oldXY = new PointF();
+
+	private PointF _nowXY;// = new PointF();
+	private PointF _oldXY;// = new PointF();
 
 	public GameSurfaceView(Context context)
 	{
@@ -28,6 +29,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		_thread = new Thread(this);             //別スレッドでメインループを作る
+		_gameMgr = new GameMgr();
+		_nowXY = new PointF();
+		_oldXY = new PointF();
+
 		_thread.start();
 	}
 
@@ -35,6 +40,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
 		_thread = null;
+
+		_gameMgr = null;
+		_nowXY = null;
+		_oldXY = null;
+
+		Log.d("GameSurfaceView", "GameSurfaceDestroyed");
 	}
 
 	@Override
@@ -42,8 +53,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	{
 		while (_thread != null)
 		{ //メインループ
-			_gameMgr.onUpdate();
-			onDraw(getHolder());
+			if (_gameMgr != null)
+			{
+				_gameMgr.onUpdate();
+				onDraw(getHolder());			
+			}
 		}
 	}
 
@@ -55,7 +69,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			return;
 		}
 		//ここにゲームの描画処理を書く
-		_gameMgr.onDraw(c);
+		if (_gameMgr != null)
+		{
+			_gameMgr.onDraw(c);
+		}
 		holder.unlockCanvasAndPost(c);
 	}
 
@@ -65,12 +82,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         switch (e.getAction())
 		{
 			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
 				if (_gameMgr.isFinished())
 				{
+					Log.d("GameSurfaceView", "Restart!");
+					//_thread.suspend();
+					_gameMgr = null;
+					System.gc();
 					_gameMgr = new GameMgr();
+					//_thread.resume();
 				}
+				break;
+			case MotionEvent.ACTION_UP:
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (!_gameMgr.isFinished())
@@ -81,7 +103,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				break;
         }		
 		_oldXY.set(e.getX(), e.getY());
-		
+
         return true;
     }
 }

@@ -1,7 +1,7 @@
 package org.fujix.geminin;
 
 import android.graphics.*;
-import android.view.*;
+import android.util.*;
 import java.util.*;
 
 public class GameMgr
@@ -19,7 +19,8 @@ public class GameMgr
 	private LinkedList<Task> _taskList = new LinkedList<Task>(); //タスクリスト
 	private eStatus _status = eStatus.NORMAL;//状態
 	private Player _player;
-
+	private	Vec _vec = new Vec();		
+	
 	GameMgr()
 	{
 		_barrList.add(new BarricadeSquare(0,  0, 480, 20, new BConf(Barricade.eType.OUT)));// 画面4隅に四角形を配置
@@ -66,14 +67,28 @@ public class GameMgr
 		_taskList.add(new FpsController());
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+			super.finalize();
+		} finally {
+			_taskList = null;
+			_vec = null;
+			_player = null;
+			_barrList = null;
+
+			Log.d("GameMgr", "GameMgrDestruct");
+		}
+	}
+	
 	private boolean Collision()		//衝突判定
 	{
-		Vec vec = new Vec();		
+	//	Vec vec = new Vec();		
 		final Circle cir = _player.getPt();	//プレイヤーの中心円を取得
 
 		for (Barricade barr : _barrList)		//障害物の数だけループ
 		{
-			Def.eHitCode code = barr.isHit(cir, vec);//接触判定
+			Def.eHitCode code = barr.isHit(cir, _vec);//接触判定
 
 			switch (code)
 			{

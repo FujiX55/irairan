@@ -2,6 +2,8 @@ package org.fujix.geminin;
 
 import android.graphics.*;
 import java.util.*;
+import android.widget.*;
+import android.util.*;
 
 public class Player extends Task
 {
@@ -18,6 +20,20 @@ public class Player extends Task
 		_paint.setColor(Color.BLUE);      //色を青に設定
 		_paint.setAntiAlias(true);        //エイリアスをオン
 //		_vec._y = 2;                      //移動ベクトルを下に向ける
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+			super.finalize();
+		} finally {
+			_cir = null;
+			_sensorVec = null;
+			_vec = null;
+			_paint = null;
+			
+			Log.d("Player", "PlayerDestruct");
+		}
 	}
 
 	//自機中心円を取得する
