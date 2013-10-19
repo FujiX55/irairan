@@ -13,6 +13,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	private PointF _nowXY;// = new PointF();
 	private PointF _oldXY;// = new PointF();
 
+	private boolean _active = true;
+
 	public GameSurfaceView(Context context)
 	{
 		super(context);
@@ -53,11 +55,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	{
 		while (_thread != null)
 		{ //メインループ
-			if (_gameMgr != null)
+			if (_active == false)
 			{
-				_gameMgr.onUpdate();
-				onDraw(getHolder());			
+				_active = true;
+				// 再始動
+				_gameMgr = null;
+				System.gc();
+				_gameMgr = new GameMgr();
 			}
+			_gameMgr.onUpdate();
+			onDraw(getHolder());			
 		}
 	}
 
@@ -69,10 +76,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			return;
 		}
 		//ここにゲームの描画処理を書く
-		if (_gameMgr != null)
-		{
-			_gameMgr.onDraw(c);
-		}
+		_gameMgr.onDraw(c);
 		holder.unlockCanvasAndPost(c);
 	}
 
@@ -85,11 +89,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				if (_gameMgr.isFinished())
 				{
 					Log.d("GameSurfaceView", "Restart!");
-					//_thread.suspend();
-					_gameMgr = null;
-					System.gc();
-					_gameMgr = new GameMgr();
-					//_thread.resume();
+					_active = false;
 				}
 				break;
 			case MotionEvent.ACTION_UP:

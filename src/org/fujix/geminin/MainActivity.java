@@ -37,6 +37,8 @@ public class MainActivity extends Activity
 	{	// アクティビティが動き始める時呼ばれる
 		super.onResume();
 		AcSensor.GetInstance().onResume();// 開始時にセンサーを動かし始める
+
+		System.gc();
 	}
 
 	@Override
