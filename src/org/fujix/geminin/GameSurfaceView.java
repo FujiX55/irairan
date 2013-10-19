@@ -10,6 +10,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	private GameMgr	_gameMgr;// = new GameMgr();
 	private Thread	_thread;
 
+//	private int _width;
+//	private int _height;
+	private float _scale;
+	
 	private PointF _nowXY;// = new PointF();
 	private PointF _oldXY;// = new PointF();
 
@@ -24,7 +28,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
 	{
-		//解像度情報変更通知 
+		//解像度情報変更通知
+//		_width = width;
+//		_height = height;
+		
+		float scale_x = width/480.0f;
+		float scale_y = height/800.0f;
+		
+		if (scale_x > scale_y)
+		{
+			_scale = scale_y;
+		}
+		else
+		{
+			_scale = scale_x;
+		}
 	}
 
 	@Override
@@ -75,6 +93,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		{
 			return;
 		}
+//		c.scale(2.0f, 2.0f);
+//		c.scale(_width/480.0f, _height/800.f);
+		c.scale(_scale, _scale);
+		
 		//ここにゲームの描画処理を書く
 		_gameMgr.onDraw(c);
 		holder.unlockCanvasAndPost(c);

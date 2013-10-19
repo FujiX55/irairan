@@ -1,6 +1,7 @@
 package org.fujix.geminin;
 
 import android.graphics.*;
+import android.util.*;
 
 public class Barricade extends Task
 {
@@ -10,7 +11,7 @@ public class Barricade extends Task
 	{ // 障害物のタイプ
 		OUT, // あたるとアウトなタイプ
 		GOAL // あたるとゴールなタイプ
-	}
+		}
 
 	protected PointF _center = new PointF(0, 0); // 図形の中心点
 	protected PointF _pt[]; // 図形の頂点
@@ -39,6 +40,27 @@ public class Barricade extends Task
 		for (int i = 0; i < n; i++)
 		{
 			_pt[i] = new PointF(); // 頂点を作る
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable
+	{
+		try
+		{
+			super.finalize();
+		}
+		finally
+		{
+			for (int i = 0; i < _pt.length; i++)
+			{
+				_pt[i] = null;
+			}
+			_center = null;
+			_paint = null;
+			_path = null;
+			
+			Log.d("Barricade", "BarricadeDestruct");
 		}
 	}
 

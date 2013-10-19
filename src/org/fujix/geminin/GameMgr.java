@@ -28,13 +28,6 @@ public class GameMgr
 		_barrList.add(new BarricadeSquare(460,  0, 20, 800, new BConf(Barricade.eType.OUT)));
 		_barrList.add(new BarricadeSquare(0, 780, 480, 20, new BConf(Barricade.eType.OUT)));
 
-//      _barrList.add(new BarricadeSquare(0, 390, 480, 20, new BConf(+PI / 180)));// 中央に回転するバー(時計回り)
-//      _barrList.add(new BarricadeSquare(0, 390, 480, 20, new BConf(-PI / 180)));// 中央に回転するバー(反時計回り)
-//		_barrList.add(new BarricadeTriangle(240, 400, 200, new BConf(+PI / 180)));// 中央に回転する三角形(時計回り)
-//		_barrList.add(new BarricadeStar(240, 400, 80, 220, new BConf(+PI / 180)));// 中央に回転する星(時計回り)
-
-//		_barrList.add(new BarricadeSquare(20, 20, 100, 100, new BConf(Barricade.eType.GOAL)));// ゴール
-
 		_barrList.add(new BarricadeTriangle(0, 0, 200, new BConf(+PI / 150)));// 左上回転する三角形
 		_barrList.add(new BarricadeTriangle(480, 0, 180, new BConf(+PI / 150)));// 右上回転する三角形
 
@@ -53,7 +46,7 @@ public class GameMgr
 		_barrList.add(new BarricadeSquare(130, 600, 110, 20, new BConf(+PI / 360)));// 左下回転するバー
 		_barrList.add(new BarricadeSquare(185, 600,  55, 20, new BConf(+PI / 360)));// 左下回転するバー
 
-		_barrList.add(new BarricadeSquare(20, 680,  80, 20, null));// ゴールに接触したバー
+		_barrList.add(new BarricadeSquare(20, 680,  80, 20, new BConf(Barricade.eType.OUT)));// ゴールに接触したバー
 
 		_barrList.add(new BarricadeSquare(20, 700,  80, 80, new BConf(Barricade.eType.GOAL)));// ゴール		
 
@@ -73,6 +66,10 @@ public class GameMgr
 			super.finalize();
 		} finally {
 			_taskList = null;
+//			for (Barricade bar : _barrList)
+//			{
+//				bar = null;
+//			}
 			_vec = null;
 			_player = null;
 			_barrList = null;
