@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 
 import android.graphics.*;
 import java.util.*;
@@ -47,8 +47,6 @@ public class Player extends Task
 	{
 		float x = -AcSensor.GetInstance().getX() * 2;    //加速度センサーの情報を取得
 		float y =  AcSensor.GetInstance().getY() * 2;
-//		float x = 0;
-//		float y = 0;
 		_sensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
 		_sensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
 		_sensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           

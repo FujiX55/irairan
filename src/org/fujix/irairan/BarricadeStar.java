@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 
 public class BarricadeStar extends Barricade
 {

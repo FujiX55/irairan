@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 
 import android.graphics.*;
 import android.util.*;
@@ -20,7 +20,7 @@ public class GameMgr
 	private eStatus _status = eStatus.NORMAL;//状態
 	private Player _player;
 	private	Vec _vec = new Vec();		
-	
+
 	GameMgr()
 	{
 		_barrList.add(new BarricadeSquare(0,  0, 480, 20, new BConf(Barricade.eType.OUT)));// 画面4隅に四角形を配置
@@ -59,12 +59,16 @@ public class GameMgr
 		_taskList.add(_player);
 		_taskList.add(new FpsController());
 	}
-
+	
 	@Override
-	protected void finalize() throws Throwable {
-		try {
+	protected void finalize() throws Throwable
+	{
+		try
+		{
 			super.finalize();
-		} finally {
+		}
+		finally
+		{
 			_taskList = null;
 //			for (Barricade bar : _barrList)
 //			{
@@ -77,10 +81,10 @@ public class GameMgr
 			Log.d("GameMgr", "GameMgrDestruct");
 		}
 	}
-	
+
 	private boolean Collision()		//衝突判定
 	{
-	//	Vec vec = new Vec();		
+		//	Vec vec = new Vec();		
 		final Circle cir = _player.getPt();	//プレイヤーの中心円を取得
 
 		for (Barricade barr : _barrList)		//障害物の数だけループ
@@ -166,9 +170,14 @@ public class GameMgr
 		}
 		return false;
 	}
-	
+
 	public void movePlayer(PointF old, PointF now)
 	{	// 自機の移動
 		_player.setMove(old, now);
 	}	
+	
+	public Player getPlayer()
+	{	// 自機の取得
+		return _player;
+	}
 }

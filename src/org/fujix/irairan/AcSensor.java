@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 
 import android.content.*;
 import android.hardware.*;

@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 import android.util.*;
 
 public class Line			// 線分定義構造体

@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 
 import android.content.*;
 import android.graphics.*;
@@ -7,15 +7,13 @@ import android.view.*;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable
 {
-	private GameMgr	_gameMgr;// = new GameMgr();
+	private GameMgr	_gameMgr;
 	private Thread	_thread;
 
-//	private int _width;
-//	private int _height;
-	private float _scale;
+	private float _scale = 1.0f;
 	
-	private PointF _nowXY;// = new PointF();
-	private PointF _oldXY;// = new PointF();
+	private PointF _nowXY;
+	private PointF _oldXY;
 
 	private boolean _active = true;
 
@@ -29,20 +27,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
 	{
 		//解像度情報変更通知
-//		_width = width;
-//		_height = height;
-		
 		float scale_x = width/480.0f;
 		float scale_y = height/800.0f;
 		
-		if (scale_x > scale_y)
-		{
-			_scale = scale_y;
-		}
-		else
-		{
-			_scale = scale_x;
-		}
+//		if (scale_x > scale_y)
+//		{
+//			_scale = scale_y;
+//		}
+//		else
+//		{
+//			_scale = scale_x;
+//		}
+		_scale = scale_x;
 	}
 
 	@Override
@@ -72,7 +68,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void run()
 	{
 		while (_thread != null)
-		{ //メインループ
+		{ 	//メインループ
 			if (_active == false)
 			{
 				_active = true;
@@ -88,17 +84,24 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 	private void onDraw(SurfaceHolder holder)
 	{
+		float y = 0;
 		Canvas c = holder.lockCanvas();
+
 		if (c == null)
 		{
 			return;
 		}
-//		c.scale(2.0f, 2.0f);
-//		c.scale(_width/480.0f, _height/800.f);
+		if (_gameMgr != null)
+		{
+			y = _gameMgr.getPlayer().getPt()._y;			
+		}
+		c.save(Canvas.CLIP_SAVE_FLAG);
 		c.scale(_scale, _scale);
+		c.clipRect(new RectF(0, 0+y, 480, 800+y));
 		
 		//ここにゲームの描画処理を書く
 		_gameMgr.onDraw(c);
+		c.restore();
 		holder.unlockCanvasAndPost(c);
 	}
 
@@ -108,7 +111,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         switch (e.getAction())
 		{
 			case MotionEvent.ACTION_DOWN:
-				if (_gameMgr.isFinished())
+				if (_gameMgr != null && _gameMgr.isFinished())
 				{
 					Log.d("GameSurfaceView", "Restart!");
 					_active = false;
@@ -117,7 +120,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			case MotionEvent.ACTION_UP:
 				break;
 			case MotionEvent.ACTION_MOVE:
-				if (!_gameMgr.isFinished())
+				if (_gameMgr != null && !_gameMgr.isFinished())
 				{
 					_nowXY.set(e.getX(), e.getY());
 					_gameMgr.movePlayer(_oldXY, _nowXY);

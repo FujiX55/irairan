@@ -1,4 +1,4 @@
-package org.fujix.geminin;
+package org.fujix.irairan;
 
 import android.graphics.*;
 import android.util.*;
@@ -13,33 +13,33 @@ public class Barricade extends Task
 		GOAL // あたるとゴールなタイプ
 		}
 
-	protected PointF _center = new PointF(0, 0); // 図形の中心点
-	protected PointF _pt[]; // 図形の頂点
-	protected Paint _paint = new Paint(); // ペイント
-	protected eType _type; // タイプ(当たるとアウトな壁、ゴールの壁、等)
-	protected float _rotaSpeed = 0; // 回転スピード
+	protected PointF _center = new PointF(0, 0); 	// 図形の中心点
+	protected PointF _pt[]; 						// 図形の頂点
+	protected Paint _paint = new Paint(); 			// ペイント
+	protected eType _type; 							// タイプ(当たるとアウトな壁、ゴールの壁、等)
+	protected float _rotaSpeed = 0; 				// 回転スピード
 
 	// コンストラクタ。 type=タイプ、 n=頂点の数、 conf=設定情報
 	public Barricade(int n, BConf conf)
 	{
 		if (conf != null)
 		{
-			_rotaSpeed = conf.speed; // 回転スピード
-			_type = conf.type; // 物体のタイプ
+			_rotaSpeed = conf.speed; 	// 回転スピード
+			_type = conf.type; 			// 物体のタイプ
 		}
 		switch (_type)
 		{
 			case OUT: // 接触してアウトな物
-				_paint.setColor(Color.RED); // 赤に
+				_paint.setColor(Color.RED); 	// 赤に
 				break;
 			case GOAL: // 接触してゴールな物
-				_paint.setColor(Color.GREEN); // 緑に
+				_paint.setColor(Color.GREEN); 	// 緑に
 				break;
 		}
 		_pt = new PointF[n]; // 頂点配列を作る
 		for (int i = 0; i < n; i++)
 		{
-			_pt[i] = new PointF(); // 頂点を作る
+			_pt[i] = new PointF(); 				// 頂点を作る
 		}
 	}
 
@@ -52,10 +52,10 @@ public class Barricade extends Task
 		}
 		finally
 		{
-			for (int i = 0; i < _pt.length; i++)
-			{
-				_pt[i] = null;
-			}
+//			for (int i = 0; i < _pt.length; i++)
+//			{
+//				_pt[i] = null;
+//			}
 			_center = null;
 			_paint = null;
 			_path = null;
@@ -78,7 +78,7 @@ public class Barricade extends Task
 	public Def.eHitCode isHit(final Circle cir, Vec vec)
 	{
 		if (DiagramCalcr.Collision(_pt, cir, vec) == true)
-		{//頂点群_ptが示す各辺と円cirが接触していればベクトルをvecに入れてtrueを返す
+		{	//頂点群_ptが示す各辺と円cirが接触していればベクトルをvecに入れてtrueを返す
 			switch (_type)
 			{
 				case OUT://アウトな線なら
@@ -88,18 +88,16 @@ public class Barricade extends Task
 			}
 		}
 		return Def.eHitCode.NO; //何も接触していない
-//		/* ここで接触判定　 */
-//		return Def.eHitCode.NO;
 	}
 
 	// 描画する
 	public void onDraw(Canvas c)
 	{
 		if (_pt.length < 1)
-		{ // 頂点が1未満なんて図形はありえない
+		{ // 頂点が1未満の図形はありえない
 			return;
 		}
-//		Path path = new Path();
+		// パスを設定
 		_path.reset();
 		_path.moveTo(_pt[0].x, _pt[0].y); // パスの初期位置をセット
 		for (int i = 0; i < _pt.length; i++)
