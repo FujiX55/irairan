@@ -13,6 +13,8 @@ public class Player extends Task
 	private Paint _paint = new Paint();     	//描画設定
 	private Vec _vec = new Vec();           	//自機の移動ベクトル
 	private Vec _sensorVec = new Vec();			//センサーのベクトル
+	
+	private int mLife;
 
 	public Player()
 	{
@@ -20,6 +22,7 @@ public class Player extends Task
 		_paint.setColor(Color.BLUE);      //色を青に設定
 		_paint.setAntiAlias(true);        //エイリアスをオン
 //		_vec._y = 2;                      //移動ベクトルを下に向ける
+		mLife = 100;
 	}
 
 	@Override
@@ -45,11 +48,13 @@ public class Player extends Task
 	// ベクトルをセットする
 	private void setVec()
 	{
-		float x = -AcSensor.GetInstance().getX() * 2;    //加速度センサーの情報を取得
-		float y =  AcSensor.GetInstance().getY() * 2;
-		_sensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
-		_sensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
-		_sensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
+//		float x = -AcSensor.GetInstance().getX() * 2;    //加速度センサーの情報を取得
+//		float y =  AcSensor.GetInstance().getY() * 2;
+//		_sensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
+//		_sensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
+//		_sensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
+		_sensorVec._x = 0;
+		_sensorVec._y = 0;
 		_vec.blend(_sensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 
@@ -79,6 +84,11 @@ public class Player extends Task
 		_vec.blend(_sensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 	
+	public void resetSensorVec()
+	{
+//		_sensorVec._x = _sensorVec._y = 0;
+	}
+	
 	@Override
 	public boolean onUpdate()
 	{
@@ -90,6 +100,22 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{
+		if (_vec.getLength() > 3.0f)
+		{
+			_paint.setColor(Color.RED);
+		}
+		else
+		{
+			_paint.setColor(Color.BLUE);
+		}
 		c.drawCircle(_cir._x, _cir._y, _cir._r, _paint);
+	}
+	
+	public void damage()
+	{	// 自機のライフ
+		if (0 < mLife)
+		{
+			mLife--;
+		}
 	}
 }

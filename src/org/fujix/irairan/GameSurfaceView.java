@@ -156,6 +156,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				}
 				break;
 			case MotionEvent.ACTION_UP:
+				if (mGameMgr != null && !mGameMgr.isFinished())
+				{
+					mGameMgr.stopPlayer();
+				}
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (mGameMgr != null && !mGameMgr.isFinished())

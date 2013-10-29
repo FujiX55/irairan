@@ -176,6 +176,11 @@ public class GameMgr
 		_player.setMove(old, now);
 	}	
 	
+	public void stopPlayer()
+	{	// 自機の停止要求
+		_player.resetSensorVec();
+	}
+	
 	public Player getPlayer()
 	{	// 自機の取得
 		return _player;
