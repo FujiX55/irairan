@@ -7,12 +7,12 @@ import java.util.*;
 public class AcSensor implements SensorEventListener
 {
 
-	private SensorManager _sensorManager = null;
+	private SensorManager mSensorManager = null;
 	private float _x, _y, _z;
 
 	public void onCreate(Context c)
 	{
-		_sensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);//センサーマネージャを取得
+		mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);//センサーマネージャを取得
 		onResume();
 	}
 
@@ -25,22 +25,22 @@ public class AcSensor implements SensorEventListener
 	//アクティビティが動き始めたらリスナーを登録する
 	public void onResume()
 	{
-		List<Sensor> sensorList = _sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);//センサーリストを取得
+		List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);//センサーリストを取得
 		if (sensorList != null && !sensorList.isEmpty())
 		{
 			Sensor sensor = sensorList.get(0);
-			_sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);//リスナー登録
+			mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);//リスナー登録
 		}
 	}
 
 	//アクティビティがポーズになったらリスナーを止める
 	public void onPause()
 	{
-		if (_sensorManager == null)
+		if (mSensorManager == null)
 		{
 			return;
 		}
-		_sensorManager.unregisterListener(this);
+		mSensorManager.unregisterListener(this);
 	}
 
 	//センサーの値に変化があった時呼ばれる

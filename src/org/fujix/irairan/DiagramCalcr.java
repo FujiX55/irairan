@@ -4,7 +4,7 @@ import android.graphics.*;
 
 public class DiagramCalcr
 {
-	static Line _line = new Line();
+	static Line mLine = new Line();
 	
 	//centerを中心に角度ang、頂点群ptを回転する
 	public static void RotateDiagram(PointF pt[], final PointF center, final float ang)
@@ -16,14 +16,14 @@ public class DiagramCalcr
 	}
 
 	//rotaPtを中心に角度ang、origPtを回転する
-	public static void RotatePt(PointF rotaPt, final PointF origPt, final float ang)
+	public static void RotatePt(PointF rotPt, final PointF orgPt, final float ang)
 	{
-		float cx = origPt.x;
-		float cy = origPt.y;
-		float x = rotaPt.x;
-		float y = rotaPt.y;
-		rotaPt.x = (float) (cx + Math.cos(ang) * (x - cx) - Math.sin(ang) * (y - cy));
-		rotaPt.y = (float) (cy + Math.sin(ang) * (x - cx) + Math.cos(ang) * (y - cy));
+		float cx = orgPt.x;
+		float cy = orgPt.y;
+		float x  = rotPt.x;
+		float y  = rotPt.y;
+		rotPt.x  = (float) (cx + Math.cos(ang) * (x - cx) - Math.sin(ang) * (y - cy));
+		rotPt.y  = (float) (cy + Math.sin(ang) * (x - cx) + Math.cos(ang) * (y - cy));
 	}
 
 	//頂点群ptの線分とcirが接触していたらその接触しているベクトルをvecに格納して返す
@@ -37,9 +37,9 @@ public class DiagramCalcr
 		for (int i = 1; i <= len; i++)
 		{//例えば線分0-1,1-2,2-3,3-0とループさせてつなげる為%を使用してループ
 //			Line line = new Line(pt[i - 1].x, pt[i - 1].y, pt[i % len].x, pt[i % len].y);
-			_line.Set(pt[i - 1].x, pt[i - 1].y, pt[i % len].x, pt[i % len].y);
+			mLine.Set(pt[i - 1].x, pt[i - 1].y, pt[i % len].x, pt[i % len].y);
 			
-			if (CollisionLC(_line, cir) == true)
+			if (CollisionLC(mLine, cir) == true)
 			{//接触していれば
 				vec._x = pt[i % len].x - pt[i - 1].x;//その線分のベクトルを格納する
 				vec._y = pt[i % len].y - pt[i - 1].y;

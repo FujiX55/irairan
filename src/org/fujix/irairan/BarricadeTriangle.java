@@ -7,10 +7,10 @@ public class BarricadeTriangle extends Barricade
 		super(3, conf);
 		for (int i=0; i < 3; i++)
 		{
-			_pt[i].x = x + (float) (Math.cos(Math.PI * 2 / 3 * i) * r);
-			_pt[i].y = y + (float) (Math.sin(Math.PI * 2 / 3 * i) * r);
+			mPt[i].x = x + (float) (Math.cos(Math.PI * 2 / 3 * i) * r);
+			mPt[i].y = y + (float) (Math.sin(Math.PI * 2 / 3 * i) * r);
 		}
-		_center.x = x;
-		_center.y = y;
+		mCenter.x = x;
+		mCenter.y = y;
 	}
 }

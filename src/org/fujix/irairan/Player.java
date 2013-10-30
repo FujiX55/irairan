@@ -9,19 +9,19 @@ public class Player extends Task
 {
 	private final static float MAX_SPEED = 20;	//移動する最大スピード
 	private final static float SIZE = 20;		//自機の大きさ
-	private Circle _cir = null;             	//自機の円
-	private Paint _paint = new Paint();     	//描画設定
-	private Vec _vec = new Vec();           	//自機の移動ベクトル
-	private Vec _sensorVec = new Vec();			//センサーのベクトル
+	private Circle mCir       = null;             	//自機の円
+	private Paint  mPaint     = new Paint();     	//描画設定
+	private Vec    mVec       = new Vec();           	//自機の移動ベクトル
+	private Vec    mSensorVec = new Vec();			//センサーのベクトル
 	
-	private int mLife;
+	private int    mLife;
 
 	public Player()
 	{
-		_cir = new Circle(240, 50, SIZE);//(240,0)の位置にSIZEの大きさの円を作る
-		_paint.setColor(Color.BLUE);      //色を青に設定
-		_paint.setAntiAlias(true);        //エイリアスをオン
-//		_vec._y = 2;                      //移動ベクトルを下に向ける
+		mCir = new Circle(240, 50, SIZE);//(240,0)の位置にSIZEの大きさの円を作る
+		mPaint.setColor(Color.BLUE);      //色を青に設定
+		mPaint.setAntiAlias(true);        //エイリアスをオン
+//		mVec._y = 2;                      //移動ベクトルを下に向ける
 		mLife = 100;
 	}
 
@@ -30,10 +30,10 @@ public class Player extends Task
 		try {
 			super.finalize();
 		} finally {
-			_cir = null;
-			_sensorVec = null;
-			_vec = null;
-			_paint = null;
+			mCir 		= null;
+			mSensorVec 	= null;
+			mVec 		= null;
+			mPaint 		= null;
 			
 			Log.d("Player", "PlayerDestruct");
 		}
@@ -42,7 +42,7 @@ public class Player extends Task
 	//自機中心円を取得する
 	public final Circle getPt()
 	{
-		return _cir;
+		return mCir;
 	}
 
 	// ベクトルをセットする
@@ -50,43 +50,47 @@ public class Player extends Task
 	{
 //		float x = -AcSensor.GetInstance().getX() * 2;    //加速度センサーの情報を取得
 //		float y =  AcSensor.GetInstance().getY() * 2;
-//		_sensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
-//		_sensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
-//		_sensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
-		_sensorVec._x = 0;
-		_sensorVec._y = 0;
-		_vec.blend(_sensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
+//		mSensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
+//		mSensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
+//		mSensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
+//		mSensorVec._x = 0;
+//		mSensorVec._y = 0;
+		mVec.blend(mSensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 
 	// 移動ベクトルの向いている方に動かす
 	private void Move()
 	{
-		_cir._x += _vec._x;     //移動ベクトル_vecが指す方向に移動させる 
-		_cir._y += _vec._y;
+		mCir._x += mVec._x;     //移動ベクトルmVecが指す方向に移動させる 
+		mCir._y += mVec._y;
 	}
 	
 	// 指定された場所へ動かす
 	public void MoveTo(float dest_x, float dest_y)
 	{
-		float distance_x = dest_x - _cir._x;
-		float distance_y = dest_y - _cir._y;
-		_cir._x = _cir._x  + distance_x / 10;	
-		_cir._y = _cir._y  + distance_y / 10;	
+		float distance_x = dest_x - mCir._x;
+		float distance_y = dest_y - mCir._y;
+		mCir._x = mCir._x  + distance_x / 10;	
+		mCir._y = mCir._y  + distance_y / 10;	
 	}
 
 	public void setMove(PointF old, PointF now)
 	{
 		float x = now.x - old.x;
 		float y = now.y - old.y;
-		_sensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
-		_sensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
-		_sensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
-		_vec.blend(_sensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
+//		x *= 0.5f;
+//		y *= 0.5f;
+//		mSensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
+//		mSensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
+		mSensorVec._x = x;
+		mSensorVec._y = y;
+		mSensorVec.setLengthCap(MAX_SPEED);     	//ベクトルの大きさが最大スピード以上にならないようにする           
+//		mVec.blend(mSensorVec, 0.05f);        		//センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 	
 	public void resetSensorVec()
 	{
-//		_sensorVec._x = _sensorVec._y = 0;
+		mSensorVec._x = mSensorVec._y = 0;
 	}
 	
 	@Override
@@ -100,15 +104,15 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{
-		if (_vec.getLength() > 3.0f)
+		if (mVec.getLength() > 4.0f)
 		{
-			_paint.setColor(Color.RED);
+			mPaint.setColor(Color.RED);
 		}
 		else
 		{
-			_paint.setColor(Color.BLUE);
+			mPaint.setColor(Color.BLUE);
 		}
-		c.drawCircle(_cir._x, _cir._y, _cir._r, _paint);
+		c.drawCircle(mCir._x, mCir._y, mCir._r, mPaint);
 	}
 	
 	public void damage()
