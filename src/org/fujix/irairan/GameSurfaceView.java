@@ -12,15 +12,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 	private float   mScale = 1.0f;
 	
-	private PointF  mPtNow;
-	private PointF  mPtOld;
-
 	private boolean mActive = true;
 	
-	private static final float STG_WIDTH  = 480.0f;
-	private static final float STG_HEIGHT = 800.0f;
+	public static final float STG_WIDTH  = 480.0f;
+	public static final float STG_HEIGHT = 800.0f;
 	
-	private ViewPort mViewPort;
+	private Viewport mViewport;
 	
 	public GameSurfaceView(Context context)
 	{
@@ -45,8 +42,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 //		}
 		mScale = scale_x;
 
-		mViewPort.W = (int)(width /mScale);
-		mViewPort.H = (int)(height/mScale);
+		mViewport.W = (int)(width /mScale);
+		mViewport.H = (int)(height/mScale);
 	}
 
 	@Override
@@ -54,9 +51,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	{
 		mThread   = new Thread(this);             //別スレッドでメインループを作る
 		mGameMgr  = new GameMgr();
-		mPtNow    = new PointF();
-		mPtOld    = new PointF();
-		mViewPort = new ViewPort(0, 0, 0, 0);
+		mViewport = new Viewport(STG_WIDTH, STG_HEIGHT);
 		
 		mThread.start();
 	}
@@ -66,9 +61,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	{
 		mThread   = null;
 		mGameMgr  = null;
-		mPtNow    = null;
-		mPtOld    = null;
-		mViewPort = null;
+		mViewport = null;
 
 		Log.d("GameSurfaceView", "GameSurfaceDestroyed");
 	}
@@ -81,8 +74,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			if (mActive == false)
 			{
 				mActive = true;
-				mViewPort.x = 0;
-				mViewPort.y = 0;
+				mViewport.x = 0;
+				mViewport.y = 0;
 				// 再始動
 				mGameMgr = null;
 				System.gc();
@@ -95,7 +88,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 	private void onDraw(SurfaceHolder holder)
 	{
+		float x = 0.0f;
 		float y = 0.0f;
+		
 		Canvas c = holder.lockCanvas();
 		if (c == null)
 		{
@@ -109,29 +104,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		c.save(Canvas.CLIP_SAVE_FLAG);
 		c.scale(mScale, mScale);
 
-		final int ZONE_TOP    = 300;
-		final int ZONE_BOTTOM = mViewPort.H - 300;
-		
 		// 自機の位置にあわせてビューポートを移動する
-		if (mViewPort.y < -(y - ZONE_TOP))
-		{
-			mViewPort.y = -(int)(y - ZONE_TOP);
-			// 画面の上端は越えない
-			if (mViewPort.y > 0)
-			{
-				mViewPort.y = 0;
-			}
-		}
-		if (mViewPort.y > -(y - ZONE_BOTTOM))
-		{
-			mViewPort.y = -(int)(y - ZONE_BOTTOM);
-			// 画面の下端は越えない
-			if (mViewPort.y < -(STG_HEIGHT - mViewPort.H))
-			{
-				mViewPort.y = -(int)(STG_HEIGHT - mViewPort.H);
-			}
-		}
-		c.translate(0, mViewPort.y);			
+		mViewport.move(x, y);
+		c.translate(0, -mViewport.y);			
 		
 		mGameMgr.onDraw(c);
 		c.restore();
@@ -142,42 +117,34 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	@Override
     public boolean onTouchEvent(MotionEvent e)
 	{	// タッチセンサーによる操作
-        switch (e.getAction())
+		if (mGameMgr == null)
+		{
+			return true;
+		}	
+		switch (e.getAction())
 		{
 			case MotionEvent.ACTION_DOWN:
-				if (mGameMgr != null && !mGameMgr.isFinished())
-				{
-					mGameMgr.initTouchPoint(e.getX(), e.getY());
-				}
-				if (mGameMgr != null && mGameMgr.isFinished())
+				if (mGameMgr.isFinished())
 				{
 					Log.d("GameSurfaceView", "Restart!");
 					mActive = false;
 				}
-				break;
-			case MotionEvent.ACTION_UP:
-				if (mGameMgr != null && !mGameMgr.isFinished())
+				else
 				{
-//					mGameMgr.stopPlayer();
+					mGameMgr.initTouchPoint(e.getX(), e.getY());
 				}
 				break;
+			case MotionEvent.ACTION_UP:
+				break;
 			case MotionEvent.ACTION_MOVE:
-				if (mGameMgr != null && !mGameMgr.isFinished())
+				if (!mGameMgr.isFinished())
 				{
-//					mPtNow.set(e.getX(), e.getY());
-//					mGameMgr.movePlayer(mPtOld, mPtNow);
 					mGameMgr.setTouchPoint(e.getX(), e.getY());
 				}
 				break;
 			default:
-				if (mGameMgr != null && !mGameMgr.isFinished())
-				{
-//					mGameMgr.stopPlayer();
-				}
 				break;
-        }
-		mPtOld.set(e.getX(), e.getY());
-		
+        }		
         return true;
     }
 }

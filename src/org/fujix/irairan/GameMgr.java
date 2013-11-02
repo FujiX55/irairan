@@ -21,7 +21,7 @@ public class GameMgr
 	private Player           mPlayer;
 	private	Vec              mVec = new Vec();		
 	private PointF 			 mPtNow, mPtOld;
-	
+
 	GameMgr()
 	{
 		mBarrList.add(new BarricadeSquare(0,  0, 480, 20, new BConf(Barricade.eType.OUT)));// 画面4隅に四角形を配置
@@ -59,10 +59,10 @@ public class GameMgr
 		mPlayer = new Player();
 		mTaskList.add(mPlayer);
 		mTaskList.add(new FpsController());
-		mPtNow = new PointF(0,0);
-		mPtOld = new PointF(0,0);
+		mPtNow = new PointF(0, 0);
+		mPtOld = new PointF(0, 0);
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable
 	{
@@ -99,8 +99,12 @@ public class GameMgr
 			switch (code)
 			{
 				case OUT://接触したものが「アウト」なら
-					mStatus = eStatus.GAMEOVER;//アウト状態に
-					return true;
+					if (0 >= mPlayer.damage())
+					{
+						mStatus = eStatus.GAMEOVER;//アウト状態に					
+						return true;
+					}
+					break;
 				case GOAL:
 					mStatus = eStatus.GAMECLEAR;
 					return true;
@@ -114,7 +118,7 @@ public class GameMgr
 	public boolean onUpdate()
 	{
 		if (mStatus != eStatus.NORMAL)
-		{//ゲームの状態が通常でないなら計算しない
+		{	//ゲームの状態が通常でないなら計算しない
 			return true;
 		}
 		// 自機の移動
@@ -122,13 +126,13 @@ public class GameMgr
 		mPtOld.set(mPtNow);
 
 		if (Collision())
-		{//衝突判定　衝突したならメソッドを抜ける
+		{	//衝突判定　衝突したならメソッドを抜ける
 			return true;
 		}
 		for (int i=0; i < mTaskList.size(); i++)
 		{
 			if (mTaskList.get(i).onUpdate() == false)
-			{ //更新失敗なら
+			{	//更新失敗なら
 				mTaskList.remove(i);              //そのタスクを消す
 				i--;
 			}
@@ -184,23 +188,23 @@ public class GameMgr
 	{	// 自機の移動
 		mPlayer.setMove(old, now);
 	}	
-	
+
 	public void stopPlayer()
 	{	// 自機の停止要求
 		mPlayer.resetSensorVec();
 	}
-	
+
 	public Player getPlayer()
 	{	// 自機の取得
 		return mPlayer;
 	}
-	
+
 	public void initTouchPoint(float x, float y)
-	{
+	{	// タッチした座標の初期化
 		setTouchPoint(x, y);
 		mPtOld.set(mPtNow);
 	}
-	
+
 	public void setTouchPoint(float x, float y)
 	{	// タッチした座標を設定する
 		mPtNow.x = x;

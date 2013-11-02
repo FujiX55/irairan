@@ -24,6 +24,7 @@ public class MainActivity extends Activity
 
 		mView = new GameSurfaceView(this);
 		setContentView(mView);
+		
 		AcSensor.GetInstance().onCreate(this); // センサー初期化
     }
 

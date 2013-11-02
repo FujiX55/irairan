@@ -15,14 +15,16 @@ public class Player extends Task
 	private Vec    mSensorVec = new Vec();			//センサーのベクトル
 	
 	private int    mLife;
+	
+	public final static int LIFE_MAX = 100;
 
 	public Player()
 	{
-		mCir = new Circle(240, 50, SIZE);//(240,0)の位置にSIZEの大きさの円を作る
-		mPaint.setColor(Color.BLUE);      //色を青に設定
-		mPaint.setAntiAlias(true);        //エイリアスをオン
-//		mVec._y = 2;                      //移動ベクトルを下に向ける
-		mLife = 100;
+		mCir = new Circle(240, 50, SIZE);	//(240,0)の位置にSIZEの大きさの円を作る
+		mPaint.setColor(Color.BLUE);      	//色を青に設定
+		mPaint.setAntiAlias(true);        	//エイリアスをオン
+//		mVec._y = 2;                      	//移動ベクトルを下に向ける
+		mLife = LIFE_MAX;
 	}
 
 	@Override
@@ -48,13 +50,6 @@ public class Player extends Task
 	// ベクトルをセットする
 	private void setVec()
 	{
-//		float x = -AcSensor.GetInstance().getX() * 2;    //加速度センサーの情報を取得
-//		float y =  AcSensor.GetInstance().getY() * 2;
-//		mSensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
-//		mSensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
-//		mSensorVec.setLengthCap(MAX_SPEED);     //ベクトルの大きさが最大スピード以上にならないようにする           
-//		mSensorVec._x = 0;
-//		mSensorVec._y = 0;
 		mVec.blend(mSensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 
@@ -70,6 +65,7 @@ public class Player extends Task
 	{
 		float distance_x = dest_x - mCir._x;
 		float distance_y = dest_y - mCir._y;
+		
 		mCir._x = mCir._x  + distance_x / 10;	
 		mCir._y = mCir._y  + distance_y / 10;	
 	}
@@ -85,7 +81,6 @@ public class Player extends Task
 		mSensorVec._x = x;
 		mSensorVec._y = y;
 		mSensorVec.setLengthCap(MAX_SPEED);     	//ベクトルの大きさが最大スピード以上にならないようにする           
-//		mVec.blend(mSensorVec, 0.05f);        		//センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 	
 	public void resetSensorVec()
@@ -103,23 +98,39 @@ public class Player extends Task
 
 	@Override
 	public void onDraw(Canvas c)
-	{
-		if (mVec.getLength() > 4.0f)
-		{
-			mPaint.setColor(Color.RED);
+	{   // 自機の描画
+		if (mVec.getLength() > 3.0f)
+		{   // 速度がある時はシアンで描画する
+			mPaint.setColor(Color.CYAN);
 		}
 		else
-		{
+		{   // 通常は青で描画
 			mPaint.setColor(Color.BLUE);
 		}
 		c.drawCircle(mCir._x, mCir._y, mCir._r, mPaint);
+		
+		// 移動ベクトルの描画
+		mPaint.setColor(Color.GREEN);
+		c.drawLine(	mCir._x, 
+					mCir._y, 
+					mCir._x + mVec._x * 10, 
+					mCir._y + mVec._y * 10, 
+					mPaint);
+					
+		// ライフの描画
+		c.drawRect(new RectF(	mCir._x - SIZE * mLife / LIFE_MAX, 
+								mCir._y - SIZE - 5,
+							 	mCir._x + SIZE * mLife / LIFE_MAX, 
+								mCir._y - SIZE),
+							 	mPaint);
 	}
 	
-	public void damage()
+	public int damage()
 	{	// 自機のライフ
 		if (0 < mLife)
 		{
 			mLife--;
 		}
+		return mLife;
 	}
 }
