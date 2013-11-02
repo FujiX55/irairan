@@ -17,6 +17,8 @@ public class Player extends Task
 	private int    mLife;
 	
 	public final static int LIFE_MAX = 100;
+	
+	private boolean mDamaged = false;
 
 	public Player()
 	{
@@ -99,6 +101,12 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{   // 自機の描画
+		if (mDamaged)
+		{	// ダメージ表現
+			mDamaged = false;			
+			mPaint.setColor(Color.RED);
+		}
+		else
 		if (mVec.getLength() > 3.0f)
 		{   // 速度がある時はシアンで描画する
 			mPaint.setColor(Color.CYAN);
@@ -129,8 +137,9 @@ public class Player extends Task
 	{	// 自機のライフ
 		if (0 < mLife)
 		{
-			mLife--;
+			mLife-=10;
 		}
+		mDamaged = true;
 		return mLife;
 	}
 }

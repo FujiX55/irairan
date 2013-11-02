@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">いらいらん</string>
+    <string name="app_name">いらいらんズ</string>
+	<color name="app_color">#000000</color>
+	<integer name="app_id">0</integer>
 
 </resources>

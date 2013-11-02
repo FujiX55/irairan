@@ -16,7 +16,7 @@ public class Barricade extends Task
 	protected PointF mCenter = new PointF(0, 0); 	// 図形の中心点
 	protected PointF mPt[]; 						// 図形の頂点
 	protected Paint  mPaint = new Paint(); 			// ペイント
-	protected eType  mType; 							// タイプ(当たるとアウトな壁、ゴールの壁、等)
+	protected eType  mType; 						// タイプ(当たるとアウトな壁、ゴールの壁、等)
 	protected float  mRotSpeed = 0; 				// 回転スピード
 
 	// コンストラクタ。 type=タイプ、 n=頂点の数、 conf=設定情報
@@ -27,6 +27,8 @@ public class Barricade extends Task
 			mRotSpeed = conf.speed; 	// 回転スピード
 			mType = conf.type; 			// 物体のタイプ
 		}
+//		mPaint.setStyle(Paint.Style.STROKE);
+		
 		switch (mType)
 		{
 			case OUT: // 接触してアウトな物

@@ -14,36 +14,42 @@ public class Viewport
 		STG_WIDTH  = stage_w;
 		STG_HEIGHT = stage_h;
 		
-		this.x = 0;
-		this.y = 0;
-		this.W = 0;
-		this.H = 0;
+		x = y = 0;
+		W = H = 0;
 	}
 	
-	public void move(float player_x, float player_y)
-	{	// ビューポートの移動
-		final int ZONE_TOP    = 300;
-		final int ZONE_BOTTOM = H - 300;
-
-		// y方向への移動
-		if (y > (player_y - ZONE_TOP))
+	public void update(float player_x, float player_y)
+	{	// ビューポートの更新
+		final int ZONE_TOP    = 0 + H / 3;
+		final int ZONE_BOTTOM = H - H / 3;
+		final int ZONE_LEFT   = 0 + W / 3;
+		final int ZONE_RIGHT  = W - W / 3;
+		
+		x = zoning(x, player_x, ZONE_LEFT, ZONE_RIGHT, STG_WIDTH,  W);
+		y = zoning(y, player_y, ZONE_TOP, ZONE_BOTTOM, STG_HEIGHT, H);		
+	}
+	
+	private int zoning(int pos, float player_pos, int min, int max, float stage_size, float viewport_size)
+	{	// 自機の位置にあわせてビューポートを移動する
+		if (pos > (player_pos - min))
 		{
-			y = (int)(player_y - ZONE_TOP);
-			// 画面の上端は越えない
-			if (y < 0)
+			pos = (int)(player_pos - min);
+			// 画面の最少端は越えない
+			if (pos < 0)
 			{
-				y = 0;
+				pos = 0;
 			}
 		}
 		else
-		if (y < (player_y - ZONE_BOTTOM))
+		if (pos < (player_pos - max))
 		{
-			y = (int)(player_y - ZONE_BOTTOM);
-			// 画面の下端は越えない
-			if (y > (STG_HEIGHT - H))
+			pos = (int)(player_pos - max);
+			// 画面の最大端は越えない
+			if (pos > (stage_size - viewport_size))
 			{
-				y = (int)(STG_HEIGHT - H);
+				pos = (int)(stage_size - viewport_size);
 			}
-		}
+		}		
+		return pos;
 	}
 } 

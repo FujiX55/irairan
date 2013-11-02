@@ -3,6 +3,8 @@ package org.fujix.irairan;
 import android.graphics.*;
 import android.util.*;
 import java.util.*;
+import android.content.res.*;
+import android.content.*;
 
 public class GameMgr
 {
@@ -22,8 +24,19 @@ public class GameMgr
 	private	Vec              mVec = new Vec();		
 	private PointF 			 mPtNow, mPtOld;
 
-	GameMgr()
+	private Context 		 mContext;
+	
+	GameMgr(Context c)
 	{
+		mContext = c;
+		
+		Resources res = c.getResources();
+		
+		Color col = new Color();
+		res.getColor(R.color.textcolor);
+		
+		int id_col = res.getIdentifier("textcolor", "color", c.getPackageName());
+		
 		mBarrList.add(new BarricadeSquare(0,  0, 480, 20, new BConf(Barricade.eType.OUT)));// 画面4隅に四角形を配置
 		mBarrList.add(new BarricadeSquare(0,  0, 20, 800, new BConf(Barricade.eType.OUT)));// コンフィグを特に設定しない時はnullを渡すとデフォルト設定になる
 		mBarrList.add(new BarricadeSquare(460,  0, 20, 800, new BConf(Barricade.eType.OUT)));
@@ -47,6 +60,8 @@ public class GameMgr
 		mBarrList.add(new BarricadeSquare(130, 600, 110, 20, new BConf(+PI / 360)));// 左下回転するバー
 		mBarrList.add(new BarricadeSquare(185, 600,  55, 20, new BConf(+PI / 360)));// 左下回転するバー
 
+		mBarrList.add(new BarricadeSquare(350, 350, 110, 20, new BConf(+PI / 360)));// 右回転するバー
+		
 		mBarrList.add(new BarricadeSquare(20, 680,  80, 20, new BConf(Barricade.eType.OUT)));// ゴールに接触したバー
 
 		mBarrList.add(new BarricadeSquare(20, 700,  80, 80, new BConf(Barricade.eType.GOAL)));// ゴール		
@@ -148,6 +163,9 @@ public class GameMgr
 				{
 					Paint paint = new Paint();
 					paint.setTextSize(80);
+					paint.setColor(Color.WHITE);
+					c.drawText("GameOver", 42, 102, paint);
+					paint.setTextSize(80);
 					paint.setColor(Color.BLACK);
 					c.drawText("GameOver", 40, 100, paint);
 				}
@@ -167,7 +185,7 @@ public class GameMgr
 
 	public void onDraw(Canvas c)
 	{
-		c.drawColor(Color.WHITE);       //白で塗りつぶす
+		c.drawColor(Color.BLACK);       //塗りつぶす
 		for (Task task : mTaskList)
 		{
 			task.onDraw(c);// 描画
