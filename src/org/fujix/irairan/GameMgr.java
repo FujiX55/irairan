@@ -148,25 +148,24 @@ public class GameMgr
 		{
 			case GAMEOVER:
 				{
-					final String msg = "GameOver";
+					final String msg = "GAME OVER";
 					Paint paint = new Paint();
 					paint.setTextSize(80);
+					paint.setColor(Color.DKGRAY);
+					c.drawText(msg, 22, 402, paint);
 					paint.setColor(Color.WHITE);
-					c.drawText(msg, 42, 102, paint);
-					paint.setTextSize(80);
-					paint.setColor(Color.BLACK);
-					c.drawText(msg, 40, 100, paint);
+					c.drawText(msg, 20, 400, paint);
 				}
 				break;
 			case GAMECLEAR:
 				{
-					final String msg = "GameClear";
+					final String msg = "GOAL!";
 					Paint paint = new Paint();
 					paint.setTextSize(80);
+					paint.setColor(Color.DKGRAY);
+					c.drawText(msg, 122, 402, paint);
 					paint.setColor(Color.WHITE);
-					c.drawText(msg, 42, 102, paint);
-					paint.setColor(Color.BLACK);
-					c.drawText(msg, 40, 100, paint);
+					c.drawText(msg, 120, 400, paint);
 				}
 				break;
 			default:
