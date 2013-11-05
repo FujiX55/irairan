@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--オブジェクトの数-->
+	<integer name="st2_bar_count">19</integer>
+		
+	<!--画面4隅に四角形を配置-->
+	<string name="st2_bar1_shape">Square</string>
+	<integer name="st2_bar1_x">0</integer>
+	<integer name="st2_bar1_y">0</integer>
+	<integer name="st2_bar1_w">480</integer>
+	<integer name="st2_bar1_h">20</integer>
+	<string name="st2_bar1_type">OUT</string>
+
+	<string name="st2_bar2_shape">Square</string>
+	<integer name="st2_bar2_x">0</integer>
+	<integer name="st2_bar2_y">0</integer>
+	<integer name="st2_bar2_w">20</integer>
+	<integer name="st2_bar2_h">800</integer>
+	<string name="st2_bar2_type">OUT</string>
+
+	<string name="st2_bar3_shape">Square</string>
+	<integer name="st2_bar3_x">460</integer>
+	<integer name="st2_bar3_y">0</integer>
+	<integer name="st2_bar3_w">20</integer>
+	<integer name="st2_bar3_h">800</integer>
+	<string name="st2_bar3_type">OUT</string>
+
+	<string name="st2_bar4_shape">Square</string>
+	<integer name="st2_bar4_x">0</integer>
+	<integer name="st2_bar4_y">780</integer>
+	<integer name="st2_bar4_w">480</integer>
+	<integer name="st2_bar4_h">20</integer>
+	<string name="st2_bar4_type">OUT</string>
+
+	<!--左上回転する三角形-->
+	<string name="st2_bar5_shape">Triangle</string>
+	<integer name="st2_bar5_x">0</integer>
+	<integer name="st2_bar5_y">0</integer>
+	<integer name="st2_bar5_r">200</integer>
+	<string name="st2_bar5_type">CCW</string>
+	<integer name="st2_bar5_ratio">150</integer>
+	
+	<!--右上回転する三角形-->
+	<string name="st2_bar6_shape">Triangle</string>
+	<integer name="st2_bar6_x">480</integer>
+	<integer name="st2_bar6_y">0</integer>
+	<integer name="st2_bar6_r">180</integer>
+	<string name="st2_bar6_type">CW</string>
+	<integer name="st2_bar6_ratio">150</integer>
+
+	<!--中央に回転する星-->
+	<string name="st2_bar7_shape">Star</string>
+	<integer name="st2_bar7_x">240</integer>
+	<integer name="st2_bar7_y">240</integer>
+	<integer name="st2_bar7_ir">50</integer>
+	<integer name="st2_bar7_or">200</integer>
+	<string name="st2_bar7_type">CCW</string>
+	<integer name="st2_bar7_ratio">360</integer>
+	<!--中央に回転する星-->
+	<string name="st2_bar8_shape">Star</string>
+	<integer name="st2_bar8_x">240</integer>
+	<integer name="st2_bar8_y">240</integer>
+	<integer name="st2_bar8_ir">20 </integer>
+	<integer name="st2_bar8_or">80</integer>
+	<string name="st2_bar8_type">CW</string>
+	<integer name="st2_bar8_ratio">360</integer>
+
+	<!--右下の固定通路-->
+	<string name="st2_bar9_shape">Square</string>
+	<integer name="st2_bar9_x">300</integer>
+	<integer name="st2_bar9_y">440</integer>
+	<integer name="st2_bar9_w">200</integer>
+	<integer name="st2_bar9_h">20</integer>
+	<string name="st2_bar9_type">OUT</string>
+
+	<string name="st2_bar10_shape">Square</string>
+	<integer name="st2_bar10_x">250</integer>
+	<integer name="st2_bar10_y">520</integer>
+	<integer name="st2_bar10_w">130</integer>
+	<integer name="st2_bar10_h">20</integer>
+	<string name="st2_bar10_type">OUT</string>
+
+	<string name="st2_bar11_shape">Square</string>
+	<integer name="st2_bar11_x">330</integer>
+	<integer name="st2_bar11_y">620</integer>
+	<integer name="st2_bar11_w">130</integer>
+	<integer name="st2_bar11_h">20</integer>
+	<string name="st2_bar11_type">OUT</string>
+
+	<!--中央区切り線-->
+	<string name="st2_bar12_shape">Square</string>
+	<integer name="st2_bar12_x">230</integer>
+	<integer name="st2_bar12_y">390</integer>
+	<integer name="st2_bar12_w">20</integer>
+	<integer name="st2_bar12_h">350</integer>
+	<string name="st2_bar12_type">OUT</string>
+
+	<!--左下回転するバー-->
+	<string name="st2_bar13_shape">Square</string>
+	<integer name="st2_bar13_x">0</integer>
+	<integer name="st2_bar13_y">480</integer>
+	<integer name="st2_bar13_w">240</integer>
+	<integer name="st2_bar13_h">20</integer>
+	<string name="st2_bar13_type">CW</string>
+	<integer name="st2_bar13_ratio">360</integer>
+
+	<!--左下回転するバー-->
+	<string name="st2_bar14_shape">Square</string>
+	<integer name="st2_bar14_x">20</integer>
+	<integer name="st2_bar14_y">600</integer>
+	<integer name="st2_bar14_w">110</integer>
+	<integer name="st2_bar14_h">20</integer>
+	<string name="st2_bar14_type">CW</string>
+	<integer name="st2_bar14_ratio">360</integer>
+
+	<!--左下回転するバー-->
+	<string name="st2_bar15_shape">Square</string>
+	<integer name="st2_bar15_x">130</integer>
+	<integer name="st2_bar15_y">600</integer>
+	<integer name="st2_bar15_w">110</integer>
+	<integer name="st2_bar15_h">20</integer>
+	<string name="st2_bar15_type">CW</string>
+	<integer name="st2_bar15_ratio">360</integer>
+
+	<!--左下回転するバー-->
+	<string name="st2_bar16_shape">Square</string>
+	<integer name="st2_bar16_x">185</integer>
+	<integer name="st2_bar16_y">600 </integer>
+	<integer name="st2_bar16_w">55</integer>
+	<integer name="st2_bar16_h">20</integer>
+	<string name="st2_bar16_type">CW</string>
+	<integer name="st2_bar16_ratio">360</integer>
+
+	<!--右回転するバー-->
+	<string name="st2_bar17_shape">Square</string>
+	<integer name="st2_bar17_x">350</integer>
+	<integer name="st2_bar17_y">350</integer>
+	<integer name="st2_bar17_w">110</integer>
+	<integer name="st2_bar17_h">20</integer>
+	<string name="st2_bar17_type">CW</string>
+	<integer name="st2_bar17_ratio">360</integer>
+
+	<!--ゴールに接触したバー-->
+	<string name="st2_bar18_shape">Square</string>
+	<integer name="st2_bar18_x">20</integer>
+	<integer name="st2_bar18_y">680 </integer>
+	<integer name="st2_bar18_w">80</integer>
+	<integer name="st2_bar18_h">20</integer>
+	<string name="st2_bar18_type">OUT</string>
+
+	<!--ゴール-->		
+	<string name="st2_bar19_shape">Square</string>
+	<integer name="st2_bar19_x">20</integer>
+	<integer name="st2_bar19_y">700 </integer>
+	<integer name="st2_bar19_w">80</integer>
+	<integer name="st2_bar19_h">80</integer>
+	<string name="st2_bar19_type">GOAL</string>
+	
+</resources>

@@ -21,21 +21,21 @@ public class GameMgr
 	private LinkedList<Task> mTaskList = new LinkedList<Task>(); 		//タスクリスト
 	private eStatus          mStatus = eStatus.NORMAL;					//状態
 	private Player           mPlayer;
-	private FpsController 	 mFps;
 	private	Vec              mVec = new Vec();		
 	private PointF 			 mPtNow, mPtOld;
 
 	private Context 		 mContext;
 	
-	GameMgr(Context c, int stage)
+	GameMgr(Context c)
 	{
 		mContext = c;
 		
 		// リソースからステージデータを読込む
-		Resources res      = c.getResources();
-		String packageName = c.getPackageName();
-		
-		int bar_count = res.getInteger(res.getIdentifier("st" + stage + "_bar_count","integer",packageName));
+		int stage  = 1;
+
+		Resources res = c.getResources();
+
+		int bar_count = res.getInteger(res.getIdentifier("st" + stage + "_bar_count","integer",c.getPackageName()));
 		
 		for (int bar_id = 0; bar_id < bar_count; bar_id++)
 		{
@@ -53,8 +53,7 @@ public class GameMgr
 		mTaskList.add(mPlayer);
 		
 		// ＦＰＳ表示オブジェクトの登録
-		mFps = new FpsController();
-//		mTaskList.add(mFps);
+		mTaskList.add(new FpsController());
 		
 		// タッチ座標を初期化
 		mPtNow = new PointF(0, 0);
@@ -134,39 +133,31 @@ public class GameMgr
 				mTaskList.remove(i);              //そのタスクを消す
 				i--;
 			}
-		}
-		mFps.onUpdate();
-		
+		}		
 		return true;
 	}
 
 	private void drawStatus(Canvas c)
-	{	//状態を表示する
-		mFps.onDraw(c);
-		
+	{//状態を表示する
 		switch (mStatus)
 		{
 			case GAMEOVER:
 				{
-					final String msg = "GameOver";
 					Paint paint = new Paint();
 					paint.setTextSize(80);
 					paint.setColor(Color.WHITE);
-					c.drawText(msg, 42, 102, paint);
+					c.drawText("GameOver", 42, 102, paint);
 					paint.setTextSize(80);
 					paint.setColor(Color.BLACK);
-					c.drawText(msg, 40, 100, paint);
+					c.drawText("GameOver", 40, 100, paint);
 				}
 				break;
 			case GAMECLEAR:
 				{
-					final String msg = "GameClear";
 					Paint paint = new Paint();
 					paint.setTextSize(80);
-					paint.setColor(Color.WHITE);
-					c.drawText(msg, 42, 102, paint);
 					paint.setColor(Color.BLACK);
-					c.drawText(msg, 40, 100, paint);
+					c.drawText("GameClear", 40, 100, paint);
 				}
 				break;
 			default:
@@ -226,10 +217,10 @@ public class GameMgr
 	
 	private void setBarricade(int stage, int index)
 	{	// 障害物をタイプごとに読分ける
-		Resources res      = mContext.getResources();
-		String packageName = mContext.getPackageName();
-		String shape       = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_shape", "string", packageName));
-		
+		Context c = mContext;
+		Resources res = c.getResources();
+
+		String shape = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_shape","string",c.getPackageName()));
 		if (shape.equals("Square"))
 		{
 			setBarricadeSquare(stage, index);
@@ -248,15 +239,15 @@ public class GameMgr
 	
 	private void setBarricadeSquare(int stage, int index)
 	{	// 矩形タイプの障害物
-		Resources res      = mContext.getResources();
-		String packageName = mContext.getPackageName();
+		Context c = mContext;
+		Resources res = c.getResources();
 		
-		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x","integer", packageName));
-		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y","integer", packageName));
-		int w = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_w","integer", packageName));
-		int h = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_h","integer", packageName));
+		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x","integer",c.getPackageName()));
+		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y","integer",c.getPackageName()));
+		int w = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_w","integer",c.getPackageName()));
+		int h = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_h","integer",c.getPackageName()));
 
-		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type", "string", packageName));
+		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type","string",c.getPackageName()));
 
 		if (type.equals("OUT"))
 		{
@@ -270,62 +261,62 @@ public class GameMgr
 		else
 		if (type.equals("CW"))
 		{
-			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio", "integer", packageName));
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
 			mBarrList.add(new BarricadeSquare(x, y, w, h, new BConf(+PI / ratio)));				
 		}		
 		else
 		if (type.equals("CCW"))
 		{
-			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio", "integer", packageName));
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
 			mBarrList.add(new BarricadeSquare(x, y, w, h, new BConf(-PI / ratio)));				
 		}		
 	}
 	
 	private void setBarricadeTriangle(int stage, int index)
 	{	// 三角形タイプの障害物
-		Resources res      = mContext.getResources();
-		String packageName = mContext.getPackageName();
-		
-		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x", "integer", packageName));
-		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y", "integer", packageName));
-		int r = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_r", "integer", packageName));
+		Context c = mContext;
+		Resources res = c.getResources();
 
-		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type", "string", packageName));
+		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x","integer",c.getPackageName()));
+		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y","integer",c.getPackageName()));
+		int r = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_r","integer",c.getPackageName()));
+
+		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type","string",c.getPackageName()));
 
 		if (type.equals("CW"))
 		{
-			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio", "integer", packageName));
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
 			mBarrList.add(new BarricadeTriangle(x, y, r, new BConf(+PI / ratio)));
 		}		
 		else
 		if (type.equals("CCW"))
 		{
-			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio", "integer", packageName));
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
 			mBarrList.add(new BarricadeTriangle(x, y, r, new BConf(-PI / ratio)));
 		}		
 	}
 	
 	private void setBarricadeStar(int stage, int index)
 	{	// 星形の障害物
-		Resources res      = mContext.getResources();
-		String packageName = mContext.getPackageName();
+		Context c = mContext;
+		Resources res = c.getResources();
+
+		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x","integer",c.getPackageName()));
+		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y","integer",c.getPackageName()));
+		int ir = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ir","integer",c.getPackageName()));
+		int or = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_or","integer",c.getPackageName()));
 		
-		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x", "integer", packageName));
-		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y", "integer", packageName));
-		int ir = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ir", "integer", packageName));
-		int or = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_or", "integer", packageName));
-		
-		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type", "string", packageName));
+		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type","string",c.getPackageName()));
 
 		if (type.equals("CW"))
 		{
-			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio", "integer", packageName));
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
 			mBarrList.add(new BarricadeStar(x, y, ir, or, new BConf(+PI / ratio)));
 		}		
 		else
 		if (type.equals("CCW"))
 		{
-			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio", "integer", packageName));
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
 			mBarrList.add(new BarricadeStar(x, y, ir, or, new BConf(-PI / ratio)));
 		}		
 	}

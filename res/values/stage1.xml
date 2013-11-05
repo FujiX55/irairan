@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--オブジェクトの数-->
+	<integer name="st1_bar_count">6</integer>
+		
+	<!--画面4隅に四角形を配置-->
+	<string name="st1_bar1_shape">Square</string>
+	<integer name="st1_bar1_x">0</integer>
+	<integer name="st1_bar1_y">0</integer>
+	<integer name="st1_bar1_w">480</integer>
+	<integer name="st1_bar1_h">20</integer>
+	<string name="st1_bar1_type">OUT</string>
+
+	<string name="st1_bar2_shape">Square</string>
+	<integer name="st1_bar2_x">0</integer>
+	<integer name="st1_bar2_y">0</integer>
+	<integer name="st1_bar2_w">20</integer>
+	<integer name="st1_bar2_h">800</integer>
+	<string name="st1_bar2_type">OUT</string>
+
+	<string name="st1_bar3_shape">Square</string>
+	<integer name="st1_bar3_x">460</integer>
+	<integer name="st1_bar3_y">0</integer>
+	<integer name="st1_bar3_w">20</integer>
+	<integer name="st1_bar3_h">800</integer>
+	<string name="st1_bar3_type">OUT</string>
+
+	<string name="st1_bar4_shape">Square</string>
+	<integer name="st1_bar4_x">0</integer>
+	<integer name="st1_bar4_y">780</integer>
+	<integer name="st1_bar4_w">480</integer>
+	<integer name="st1_bar4_h">20</integer>
+	<string name="st1_bar4_type">OUT</string>
+
+	<!--左上回転する三角形-->
+	<string name="st1_bar5_shape">Triangle</string>
+	<integer name="st1_bar5_x">240</integer>
+	<integer name="st1_bar5_y">400</integer>
+	<integer name="st1_bar5_r">200</integer>
+	<string name="st1_bar5_type">CCW</string>
+	<integer name="st1_bar5_ratio">150</integer>
+	
+	<!--ゴール-->		
+	<string name="st1_bar6_shape">Square</string>
+	<integer name="st1_bar6_x">20</integer>
+	<integer name="st1_bar6_y">700 </integer>
+	<integer name="st1_bar6_w">440</integer>
+	<integer name="st1_bar6_h">80</integer>
+	<string name="st1_bar6_type">GOAL</string>
+
+</resources>

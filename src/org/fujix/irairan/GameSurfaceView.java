@@ -55,7 +55,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		mThread   = new Thread(this);             //別スレッドでメインループを作る
-		mGameMgr  = new GameMgr(mContext);
+		mGameMgr  = new GameMgr(mContext, 1);
 		mViewport = new Viewport(STG_WIDTH, STG_HEIGHT);
 
 		mThread.start();
@@ -95,7 +95,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		// 再始動
 		mGameMgr = null;
 		System.gc();
-		mGameMgr = new GameMgr(mContext);		
+		mGameMgr = new GameMgr(mContext, 2);		
 	}
 	
 	private void onDraw(SurfaceHolder holder)
@@ -107,21 +107,23 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			//ここにゲームの描画処理を書く
 			if (mGameMgr != null)
 			{
-				float x = 0.0f;
-				float y = 0.0f;
-
-				x = mGameMgr.getPlayer().getPt()._x;			
-				y = mGameMgr.getPlayer().getPt()._y;			
+				float x = mGameMgr.getPlayer().getPt()._x;			
+				float y = mGameMgr.getPlayer().getPt()._y;			
 				
 				c.save(Canvas.CLIP_SAVE_FLAG);
+//				c.save(Canvas.ALL_SAVE_FLAG);
 				c.scale(mScale, mScale);
 
 				// 自機の位置にあわせてビューポートを移動する
 				mViewport.update(x, y);
 				c.translate(-mViewport.x, -mViewport.y);			
-
+//				c.rotate(45.0f);
+				
 				mGameMgr.onDraw(c);
 				c.restore();
+				
+				// ※元の座標に描画したいがうまく行ってない
+				c.translate(+mViewport.x, +mViewport.y);			
 				mGameMgr.onDrawStatus(c);
 			}
 			holder.unlockCanvasAndPost(c);
