@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!--オブジェクトの数-->
+	<integer name="st1_bar_count">19</integer>
+		
 	<!--画面4隅に四角形を配置-->
 	<string name="st1_bar1_shape">Square</string>
 	<integer name="st1_bar1_p1">0</integer>

@@ -30,42 +30,61 @@ public class GameMgr
 	{
 		mContext = c;
 		
+		// 画面4隅に四角形を配置
+		int stage  = 1;
+
 		Resources res = c.getResources();
+
+		int bar_count = res.getInteger(res.getIdentifier("st" + stage + "_bar_count","integer",c.getPackageName()));
 		
-		Color col = new Color();
-		res.getColor(R.color.textcolor);
-		
-		int id_col = res.getIdentifier("textcolor", "color", c.getPackageName());
-		
-		mBarrList.add(new BarricadeSquare(0,  0, 480, 20, new BConf(Barricade.eType.OUT)));// 画面4隅に四角形を配置
-		mBarrList.add(new BarricadeSquare(0,  0, 20, 800, new BConf(Barricade.eType.OUT)));// コンフィグを特に設定しない時はnullを渡すとデフォルト設定になる
-		mBarrList.add(new BarricadeSquare(460,  0, 20, 800, new BConf(Barricade.eType.OUT)));
-		mBarrList.add(new BarricadeSquare(0, 780, 480, 20, new BConf(Barricade.eType.OUT)));
-
-		mBarrList.add(new BarricadeTriangle(0, 0, 200, new BConf(+PI / 150)));// 左上回転する三角形
-		mBarrList.add(new BarricadeTriangle(480, 0, 180, new BConf(+PI / 150)));// 右上回転する三角形
-
-		mBarrList.add(new BarricadeStar(240, 240, 50, 200, new BConf(-PI / 360)));// 中央に回転する星
-		mBarrList.add(new BarricadeStar(240, 240, 20,  80, new BConf(+PI / 360)));// 中央に回転する星
-
-		mBarrList.add(new BarricadeSquare(300, 440, 200, 20, new BConf(Barricade.eType.OUT)));//右下の固定通路
-		mBarrList.add(new BarricadeSquare(250, 520, 130, 20, new BConf(Barricade.eType.OUT)));//
-		mBarrList.add(new BarricadeSquare(330, 620, 130, 20, new BConf(Barricade.eType.OUT)));//
-
-		mBarrList.add(new BarricadeSquare(230, 390, 20, 350, new BConf(Barricade.eType.OUT)));//中央区切り線
-
-		mBarrList.add(new BarricadeSquare(0, 480, 240, 20, new BConf(+PI / 360)));// 左下回転するバー
-
-		mBarrList.add(new BarricadeSquare(20, 600, 110, 20, new BConf(+PI / 360)));// 左下回転するバー
-		mBarrList.add(new BarricadeSquare(130, 600, 110, 20, new BConf(+PI / 360)));// 左下回転するバー
-		mBarrList.add(new BarricadeSquare(185, 600,  55, 20, new BConf(+PI / 360)));// 左下回転するバー
-
-		mBarrList.add(new BarricadeSquare(350, 350, 110, 20, new BConf(+PI / 360)));// 右回転するバー
-		
-		mBarrList.add(new BarricadeSquare(20, 680,  80, 20, new BConf(Barricade.eType.OUT)));// ゴールに接触したバー
-
-		mBarrList.add(new BarricadeSquare(20, 700,  80, 80, new BConf(Barricade.eType.GOAL)));// ゴール		
-
+		for (int bar_id = 0; bar_id < bar_count; bar_id++)
+		{
+			setBarricade(stage, bar_id+1);			
+		}
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+//		
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeTriangle(0, 0, 200, new BConf(+PI / 150)));// 左上回転する三角形
+////		mBarrList.add(new BarricadeTriangle(480, 0, 180, new BConf(+PI / 150)));// 右上回転する三角形
+//
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeStar(240, 240, 50, 200, new BConf(-PI / 360)));// 中央に回転する星
+////		mBarrList.add(new BarricadeStar(240, 240, 20,  80, new BConf(+PI / 360)));// 中央に回転する星
+//
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(300, 440, 200, 20, new BConf(Barricade.eType.OUT)));//右下の固定通路
+////		mBarrList.add(new BarricadeSquare(250, 520, 130, 20, new BConf(Barricade.eType.OUT)));//
+////		mBarrList.add(new BarricadeSquare(330, 620, 130, 20, new BConf(Barricade.eType.OUT)));//
+//
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(230, 390, 20, 350, new BConf(Barricade.eType.OUT)));//中央区切り線
+//
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(0, 480, 240, 20, new BConf(+PI / 360)));// 左下回転するバー
+//
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(20, 600, 110, 20, new BConf(+PI / 360)));// 左下回転するバー
+////		mBarrList.add(new BarricadeSquare(130, 600, 110, 20, new BConf(+PI / 360)));// 左下回転するバー
+////		mBarrList.add(new BarricadeSquare(185, 600,  55, 20, new BConf(+PI / 360)));// 左下回転するバー
+//
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(350, 350, 110, 20, new BConf(+PI / 360)));// 右回転するバー
+//		
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(20, 680,  80, 20, new BConf(Barricade.eType.OUT)));// ゴールに接触したバー
+//
+//		setBarricade(stage, bar_id++);
+////		mBarrList.add(new BarricadeSquare(20, 700,  80, 80, new BConf(Barricade.eType.GOAL)));// ゴール		
+//
 		for (Barricade bar : mBarrList)
 		{
 			mTaskList.add(bar);     //タスクリストに障害物を追加
@@ -190,7 +209,11 @@ public class GameMgr
 		{
 			task.onDraw(c);// 描画
 		}
-		drawStatus(c);//状態を表示する
+	}
+	
+	public void onDrawStatus(Canvas c)
+	{
+		drawStatus(c);//状態を表示する		
 	}
 
 	public boolean isFinished()
@@ -227,5 +250,111 @@ public class GameMgr
 	{	// タッチした座標を設定する
 		mPtNow.x = x;
 		mPtNow.y = y;
+	}
+	
+	private void setBarricade(int stage, int index)
+	{
+		Context c = mContext;
+		Resources res = c.getResources();
+
+		String shape = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_shape","string",c.getPackageName()));
+		if (shape.equals("Square"))
+		{
+			setBarricadeSquare(stage, index);
+		}
+		else
+		if (shape.equals("Triangle"))
+		{
+			setBarricadeTriangle(stage, index);
+		}
+		else
+		if (shape.equals("Star"))
+		{
+			setBarricadeStar(stage, index);
+		}
+	}
+	
+	private void setBarricadeSquare(int stage, int index)
+	{
+		Context c = mContext;
+		Resources res = c.getResources();
+		
+		int p1 = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_p1","integer",c.getPackageName()));
+		int p2 = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_p2","integer",c.getPackageName()));
+		int p3 = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_p3","integer",c.getPackageName()));
+		int p4 = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_p4","integer",c.getPackageName()));
+
+		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type","string",c.getPackageName()));
+
+		if (type.equals("OUT"))
+		{
+			mBarrList.add(new BarricadeSquare(p1, p2, p3, p4, new BConf(Barricade.eType.OUT)));
+		}
+		else
+		if (type.equals("GOAL"))
+		{
+			mBarrList.add(new BarricadeSquare(p1, p2, p3, p4, new BConf(Barricade.eType.GOAL)));				
+		}		
+		else
+		if (type.equals("CW"))
+		{
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
+			mBarrList.add(new BarricadeSquare(p1, p2, p3, p4, new BConf(+PI / ratio)));				
+		}		
+		else
+		if (type.equals("CCW"))
+		{
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
+			mBarrList.add(new BarricadeSquare(p1, p2, p3, p4, new BConf(-PI / ratio)));				
+		}		
+	}
+	
+	private void setBarricadeTriangle(int stage, int index)
+	{
+		Context c = mContext;
+		Resources res = c.getResources();
+
+		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x","integer",c.getPackageName()));
+		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y","integer",c.getPackageName()));
+		int r = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_r","integer",c.getPackageName()));
+
+		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type","string",c.getPackageName()));
+
+		if (type.equals("CW"))
+		{
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
+			mBarrList.add(new BarricadeTriangle(x, y, r, new BConf(+PI / ratio)));
+		}		
+		else
+		if (type.equals("CCW"))
+		{
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
+			mBarrList.add(new BarricadeTriangle(x, y, r, new BConf(-PI / ratio)));
+		}		
+	}
+	
+	private void setBarricadeStar(int stage, int index)
+	{
+		Context c = mContext;
+		Resources res = c.getResources();
+
+		int x = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_x","integer",c.getPackageName()));
+		int y = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_y","integer",c.getPackageName()));
+		int ir = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ir","integer",c.getPackageName()));
+		int or = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_or","integer",c.getPackageName()));
+		
+		String type = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_type","string",c.getPackageName()));
+
+		if (type.equals("CW"))
+		{
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
+			mBarrList.add(new BarricadeStar(x, y, ir, or, new BConf(+PI / ratio)));
+		}		
+		else
+		if (type.equals("CCW"))
+		{
+			int ratio = res.getInteger(res.getIdentifier("st" + stage + "_bar" + index + "_ratio","integer",c.getPackageName()));
+			mBarrList.add(new BarricadeStar(x, y, ir, or, new BConf(-PI / ratio)));
+		}		
 	}
 }

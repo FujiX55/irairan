@@ -44,7 +44,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 //		{
 //			mScale = scale_x;
 //		}
-		mScale = scale_x * 2;
+		mScale = scale_x;
+//		mScale = scale_x * 2;
 
 		mViewport.W = (int)(width  / mScale);
 		mViewport.H = (int)(height / mScale);
@@ -121,6 +122,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 				mGameMgr.onDraw(c);
 				c.restore();
+				mGameMgr.onDrawStatus(c);
 			}
 			holder.unlockCanvasAndPost(c);
 		}
