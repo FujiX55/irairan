@@ -7,7 +7,7 @@ import android.view.*;
 
 public class MainActivity extends Activity
 {
-	GameSurfaceView mView;
+	GameView mView;
 
     /** Called when the activity is first created. */
     @Override
@@ -24,7 +24,7 @@ public class MainActivity extends Activity
 		//画面のタイムアウト防止 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		mView = new GameSurfaceView(this);
+		mView = new GameView(this);
 		setContentView(mView);
 		
 		// センサー初期化
@@ -38,25 +38,34 @@ public class MainActivity extends Activity
 //		System.exit(0);
 	}
 	
+	/**
+	 * アクティビティが動き始める時呼ばれる
+	 */
 	@Override
 	protected void onResume()
-	{	// アクティビティが動き始める時呼ばれる
+	{
 		super.onResume();
 //		AcSensor.GetInstance().onResume();// 開始時にセンサーを動かし始める
 
 		System.gc();
 	}
 
+	/**
+	 * アクティビティの動きが止まる時呼ばれる
+	 */
 	@Override
 	protected void onPause()
-	{	// アクティビティの動きが止まる時呼ばれる
+	{
 		super.onPause();
 //		AcSensor.GetInstance().onPause();// 中断時にセンサーを止める
 	}
 
+	/**
+	 * ボタンが押された時に呼ばれる
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
-	{	//ボタンが押された時に呼ばれる
+	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{	//戻るボタンなら
 			Log.d("MainActivity", "KEY_BACK!");

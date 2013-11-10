@@ -6,7 +6,7 @@ import java.util.*;
 import android.content.res.*;
 import android.content.*;
 
-public class GameMgr
+public class GameDirector
 {
 	private enum eStatus	//状態
 	{
@@ -27,7 +27,7 @@ public class GameMgr
 
 	private Context 		 mContext;
 	
-	GameMgr(Context c, int stage)
+	GameDirector(Context c, int stage)
 	{
 		mContext = c;
 		

@@ -5,9 +5,9 @@ import android.graphics.*;
 import android.util.*;
 import android.view.*;
 
-public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable
+public class GameView extends SurfaceView implements SurfaceHolder.Callback, Runnable
 {
-	private GameMgr	mGameMgr;
+	private GameDirector	mDirector;
 	private Thread	mThread;
 
 	private float   mScale = 1.0f;
@@ -21,7 +21,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 	private Context mContext;
 
-	public GameSurfaceView(Context context)
+	public GameView(Context context)
 	{
 		super(context);
 		getHolder().addCallback(this);
@@ -55,7 +55,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		mThread   = new Thread(this);             //別スレッドでメインループを作る
-		mGameMgr  = new GameMgr(mContext, 1);
+		mDirector = new GameDirector(mContext, 1);
 		mViewport = new Viewport(STG_WIDTH, STG_HEIGHT);
 
 		mThread.start();
@@ -65,10 +65,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
 		mThread   = null;
-		mGameMgr  = null;
+		mDirector = null;
 		mViewport = null;
 
-		Log.d("GameSurfaceView", "GameSurfaceDestroyed");
+		Log.d("GameView", "SurfaceDestroyed");
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				// プレイ再開
 				onRestart();
 			}
-			mGameMgr.onUpdate();
+			mDirector.onUpdate();
 			onDraw(getHolder());			
 		}
 	}
@@ -93,9 +93,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		mViewport.x = 0;
 		mViewport.y = 0;
 		// 再始動
-		mGameMgr = null;
+		mDirector = null;
 		System.gc();
-		mGameMgr = new GameMgr(mContext, 2);		
+		mDirector = new GameDirector(mContext, 2);		
 	}
 	
 	private void onDraw(SurfaceHolder holder)
@@ -105,10 +105,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 		if (c != null)
 		{
 			//ここにゲームの描画処理を書く
-			if (mGameMgr != null)
+			if (mDirector != null)
 			{
-				float x = mGameMgr.getPlayer().getPt()._x;			
-				float y = mGameMgr.getPlayer().getPt()._y;			
+				float x = mDirector.getPlayer().getPt()._x;			
+				float y = mDirector.getPlayer().getPt()._y;			
 				
 				c.save(Canvas.CLIP_SAVE_FLAG);
 //				c.save(Canvas.ALL_SAVE_FLAG);
@@ -119,12 +119,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 				c.translate(-mViewport.x, -mViewport.y);			
 //				c.rotate(45.0f);
 				
-				mGameMgr.onDraw(c);
+				mDirector.onDraw(c);
 				c.restore();
 				
 				// ※元の座標に描画したいがうまく行ってない
 				c.translate(+mViewport.x, +mViewport.y);			
-				mGameMgr.onDrawStatus(c);
+				mDirector.onDrawStatus(c);
 			}
 			holder.unlockCanvasAndPost(c);
 		}
@@ -133,18 +133,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 	@Override
     public boolean onTouchEvent(MotionEvent e)
 	{	// タッチセンサーによる操作
-		if (mGameMgr == null)
+		if (mDirector == null)
 		{
 			return true;
 		}
 		// 状態に応じてタッチ操作の反応を切替える
-		if (mGameMgr.isFinished())
+		if (mDirector.isFinished())
 		{	// プレイ終了している場合
 			switch (e.getAction())
 			{
 				case MotionEvent.ACTION_DOWN:
 					// ゲーム再開
-					Log.d("GameSurfaceView", "Restart!");
+					Log.d("GameView", "Restart!");
 					mRestart = true;
 					break;
 				default:
@@ -158,11 +158,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 			{
 				case MotionEvent.ACTION_DOWN:
 					// タッチ開始位置をセットする
-					mGameMgr.initTouchPoint(e.getX(), e.getY());
+					mDirector.initTouchPoint(e.getX(), e.getY());
 					break;
 				case MotionEvent.ACTION_MOVE:
 					// 移動中のタッチ位置を更新する
-					mGameMgr.setTouchPoint(e.getX(), e.getY());
+					mDirector.setTouchPoint(e.getX(), e.getY());
 					break;
 				default:
 					break;
