@@ -7,17 +7,17 @@ import android.util.*;
 
 public class Player extends Task
 {
-	private final static float MAX_SPEED = 20;	//移動する最大スピード
-	private final static float SIZE = 20;		//自機の大きさ
+	private final static float MAX_SPEED = 20;		//移動する最大スピード
+	private final static float SIZE = 20;			//自機の大きさ
 	private Circle mCir       = null;             	//自機の円
 	private Paint  mPaint     = new Paint();     	//描画設定
-	private Vec    mVec       = new Vec();           	//自機の移動ベクトル
+	private Vec    mVec       = new Vec();          //自機の移動ベクトル
 	private Vec    mSensorVec = new Vec();			//センサーのベクトル
-	
+
 	private int    mLife;
-	
+
 	public final static int LIFE_MAX = 100;
-	
+
 	private boolean mDamaged = false;
 
 	public Player()
@@ -30,48 +30,63 @@ public class Player extends Task
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
-		try {
+	protected void finalize() throws Throwable
+	{
+		try
+		{
 			super.finalize();
-		} finally {
+		}
+		finally
+		{
 			mCir 		= null;
 			mSensorVec 	= null;
 			mVec 		= null;
 			mPaint 		= null;
-			
+
 			Log.d("Player", "PlayerDestruct");
 		}
 	}
 
-	//自機中心円を取得する
+	/**
+	 * 自機中心円を取得する
+	 */
 	public final Circle getPt()
 	{
 		return mCir;
 	}
 
-	// ベクトルをセットする
+	/**
+	 * ベクトルをセットする
+	 */
 	private void setVec()
 	{
 		mVec.blend(mSensorVec, 0.05f);        //センサーのベクトル方向に実際の移動ベクトルを5%近づける
 	}
 
-	// 移動ベクトルの向いている方に動かす
+	/**
+	 * 移動ベクトルの向いている方に動かす
+	 */
 	private void Move()
 	{
 		mCir._x += mVec._x;     //移動ベクトルmVecが指す方向に移動させる 
 		mCir._y += mVec._y;
 	}
-	
-	// 指定された場所へ動かす
+
+	/**
+	 * // 指定された場所へ動かす
+	 */
 	public void MoveTo(float dest_x, float dest_y)
 	{
 		float distance_x = dest_x - mCir._x;
 		float distance_y = dest_y - mCir._y;
-		
+
 		mCir._x = mCir._x  + distance_x / 10;	
 		mCir._y = mCir._y  + distance_y / 10;	
 	}
 
+	/**
+	 * 自機の移動量を設定
+	 */
 	public void setMove(PointF old, PointF now)
 	{
 		float x = now.x - old.x;
@@ -84,12 +99,18 @@ public class Player extends Task
 		mSensorVec._y = y;
 		mSensorVec.setLengthCap(MAX_SPEED);     	//ベクトルの大きさが最大スピード以上にならないようにする           
 	}
-	
+
+	/**
+	 * センサーベクトルの初期化
+	 */
 	public void resetSensorVec()
 	{
 		mSensorVec._x = mSensorVec._y = 0;
 	}
-	
+
+	/**
+	 * 自機の更新
+	 */
 	@Override
 	public boolean onUpdate()
 	{
@@ -98,9 +119,12 @@ public class Player extends Task
 		return true;
 	}
 
+	/**
+	 * 自機の描画
+	 */
 	@Override
 	public void onDraw(Canvas c)
-	{   // 自機の描画
+	{
 		if (mDamaged)
 		{	// ダメージ表現
 			mDamaged = false;			
@@ -116,28 +140,31 @@ public class Player extends Task
 			mPaint.setColor(Color.BLUE);
 		}
 		c.drawCircle(mCir._x, mCir._y, mCir._r, mPaint);
-		
+
 		// 移動ベクトルの描画
 		mPaint.setColor(Color.GREEN);
-		c.drawLine(	mCir._x, 
-					mCir._y, 
-					mCir._x + mVec._x * 10, 
-					mCir._y + mVec._y * 10, 
-					mPaint);
-					
+		c.drawLine(mCir._x, 
+				   mCir._y, 
+				   mCir._x + mVec._x * 10, 
+				   mCir._y + mVec._y * 10, 
+				   mPaint);
+
 		// ライフの描画
-		c.drawRect(new RectF(	mCir._x - SIZE * mLife / LIFE_MAX, 
-								mCir._y - SIZE - 5,
-							 	mCir._x + SIZE * mLife / LIFE_MAX, 
-								mCir._y - SIZE),
-							 	mPaint);
+		c.drawRect(new RectF(mCir._x - SIZE * mLife / LIFE_MAX, 
+							 mCir._y - SIZE - 5,
+							 mCir._x + SIZE * mLife / LIFE_MAX, 
+							 mCir._y - SIZE),
+				   mPaint);
 	}
-	
+
+	/**
+	 * 自機のライフを減らす
+	 */
 	public int damage()
-	{	// 自機のライフ
+	{
 		if (0 < mLife)
 		{
-			mLife-=10;
+			mLife -= 10;
 		}
 		mDamaged = true;
 		return mLife;

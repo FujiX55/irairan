@@ -29,6 +29,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		mContext = context;
 	}
 
+	/**
+	 * サーフェス変更時
+	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
 	{
@@ -51,6 +54,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		mViewport.H = (int)(height / mScale);
 	}
 
+	/**
+	 * サーフェス生成時
+	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder)
 	{
@@ -61,6 +67,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		mThread.start();
 	}
 
+	/**
+	 * サーフェス破棄時
+	 */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
@@ -71,6 +80,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		Log.d("GameView", "SurfaceDestroyed");
 	}
 
+	/**
+	 * スレッド実行
+	 */
 	@Override
 	public void run()
 	{
@@ -87,6 +99,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		}
 	}
 
+	/**
+	 * 再ゲーム
+	 */
 	private void onRestart()
 	{
 		// ビューポートの初期化
@@ -98,6 +113,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		mDirector = new GameDirector(mContext, 2);		
 	}
 	
+	/**
+	 * 描画処理
+	 */
 	private void onDraw(SurfaceHolder holder)
 	{
 		Canvas c = holder.lockCanvas();
@@ -130,9 +148,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		}
 	}
 
+	/**
+	 * タッチセンサーによる操作
+	 */
 	@Override
     public boolean onTouchEvent(MotionEvent e)
-	{	// タッチセンサーによる操作
+	{
 		if (mDirector == null)
 		{
 			return true;

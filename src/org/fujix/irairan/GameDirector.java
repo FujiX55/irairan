@@ -85,7 +85,10 @@ public class GameDirector
 		}
 	}
 
-	private boolean Collision()		//衝突判定
+	/**
+	 * 衝突判定
+	 */
+	private boolean Collision()
 	{
 		//	Vec vec = new Vec();		
 		final Circle cir = mPlayer.getPt();	//プレイヤーの中心円を取得
@@ -113,6 +116,9 @@ public class GameDirector
 		return false;
 	}
 
+	/**
+	 * 状態の更新
+	 */
 	public boolean onUpdate()
 	{
 		if (mStatus != eStatus.NORMAL)
@@ -140,8 +146,11 @@ public class GameDirector
 		return true;
 	}
 
+	/**
+	 * 状態を表示する
+	 */
 	private void drawStatus(Canvas c)
-	{	//状態を表示する
+	{
 		mFps.onDraw(c);
 		
 		switch (mStatus)
@@ -173,6 +182,9 @@ public class GameDirector
 		}
 	}
 
+	/**
+	 * 描画時
+	 */
 	public void onDraw(Canvas c)
 	{
 		c.drawColor(Color.BLACK);       //塗りつぶす
@@ -182,13 +194,19 @@ public class GameDirector
 		}
 	}
 	
+	/**
+	 * 状態の描画時
+	 */
 	public void onDrawStatus(Canvas c)
 	{
 		drawStatus(c);//状態を表示する		
 	}
 
+	/**
+	 * ゲームが終了しているかを返却
+	 */
 	public boolean isFinished()
-	{	// ゲーム終了？
+	{
 		if (mStatus != eStatus.NORMAL)
 		{
 			return true;
@@ -196,35 +214,53 @@ public class GameDirector
 		return false;
 	}
 
+	/**
+	 * 自機の移動
+	 */
 	public void movePlayer(PointF old, PointF now)
-	{	// 自機の移動
+	{
 		mPlayer.setMove(old, now);
 	}	
 
+	/**
+	 * 自機の停止要求
+	 */
 	public void stopPlayer()
-	{	// 自機の停止要求
+	{
 		mPlayer.resetSensorVec();
 	}
 
+	/**
+	 * 自機オブジェクトの取得
+	 */
 	public Player getPlayer()
-	{	// 自機オブジェクトの取得
+	{
 		return mPlayer;
 	}
 
+	/**
+	 * タッチ座標の初期化
+	 */
 	public void initTouchPoint(float x, float y)
-	{	// タッチした座標の初期化
+	{
 		setTouchPoint(x, y);
 		mPtOld.set(mPtNow);
 	}
 
+	/**
+	 * タッチした座標を設定する
+	 */
 	public void setTouchPoint(float x, float y)
-	{	// タッチした座標を設定する
+	{
 		mPtNow.x = x;
 		mPtNow.y = y;
 	}
 	
+	/**
+	 * リソースから障害物をタイプごとに読分ける
+	 */
 	private void setBarricade(int stage, int index)
-	{	// 障害物をタイプごとに読分ける
+	{
 		Resources res      = mContext.getResources();
 		String packageName = mContext.getPackageName();
 		String shape       = res.getString(res.getIdentifier("st" + stage + "_bar" + index + "_shape", "string", packageName));
@@ -245,8 +281,11 @@ public class GameDirector
 		}
 	}
 	
+	/**
+	 * 矩形タイプの障害物の設定
+	 */
 	private void setBarricadeSquare(int stage, int index)
-	{	// 矩形タイプの障害物
+	{
 		Resources res      = mContext.getResources();
 		String packageName = mContext.getPackageName();
 		
@@ -280,8 +319,11 @@ public class GameDirector
 		}		
 	}
 	
+	/**
+	 * 三角形タイプの障害物の設定
+	 */
 	private void setBarricadeTriangle(int stage, int index)
-	{	// 三角形タイプの障害物
+	{
 		Resources res      = mContext.getResources();
 		String packageName = mContext.getPackageName();
 		
@@ -304,8 +346,11 @@ public class GameDirector
 		}		
 	}
 	
+	/**
+	 * 星形の障害物の設定
+	 */
 	private void setBarricadeStar(int stage, int index)
-	{	// 星形の障害物
+	{
 		Resources res      = mContext.getResources();
 		String packageName = mContext.getPackageName();
 		
