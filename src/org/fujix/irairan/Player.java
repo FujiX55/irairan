@@ -4,9 +4,13 @@ import android.graphics.*;
 import java.util.*;
 import android.widget.*;
 import android.util.*;
+import android.content.*;
 
 public class Player extends Task
 {
+	private Bitmap pic;
+	private int pic_w, pic_h;
+
 	private final static float MAX_SPEED = 20;		//移動する最大スピード
 	private final static float SIZE = 20;			//自機の大きさ
 	private Circle mCir       = null;             	//自機の円
@@ -20,8 +24,12 @@ public class Player extends Task
 
 	private boolean mDamaged = false;
 
-	public Player()
+	public Player(Context c)
 	{
+		pic = BitmapFactory.decodeResource(c.getResources(), R.drawable.ic_launcher);
+		pic_w = pic.getWidth();
+		pic_h = pic.getHeight();
+		
 		mCir = new Circle(240, 50, SIZE);	//(240,0)の位置にSIZEの大きさの円を作る
 		mPaint.setColor(Color.BLUE);      	//色を青に設定
 		mPaint.setAntiAlias(true);        	//エイリアスをオン
@@ -125,21 +133,26 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{
-		if (mDamaged)
-		{	// ダメージ表現
-			mDamaged = false;			
-			mPaint.setColor(Color.RED);
+		c.drawBitmap(pic, mCir._x - pic_w/2, mCir._y - pic_h/2, null);
+		
+		if (false)
+		{
+			if (mDamaged)
+			{	// ダメージ表現
+				mDamaged = false;			
+				mPaint.setColor(Color.RED);
+			}
+			else
+			if (mVec.getLength() > 3.0f)
+			{   // 速度がある時はシアンで描画する
+				mPaint.setColor(Color.CYAN);
+			}
+			else
+			{   // 通常は青で描画
+				mPaint.setColor(Color.BLUE);
+			}
+			c.drawCircle(mCir._x, mCir._y, mCir._r, mPaint);
 		}
-		else
-		if (mVec.getLength() > 3.0f)
-		{   // 速度がある時はシアンで描画する
-			mPaint.setColor(Color.CYAN);
-		}
-		else
-		{   // 通常は青で描画
-			mPaint.setColor(Color.BLUE);
-		}
-		c.drawCircle(mCir._x, mCir._y, mCir._r, mPaint);
 
 		// 移動ベクトルの描画
 		mPaint.setColor(Color.GREEN);
@@ -151,9 +164,9 @@ public class Player extends Task
 
 		// ライフの描画
 		c.drawRect(new RectF(mCir._x - SIZE * mLife / LIFE_MAX, 
-							 mCir._y - SIZE - 5,
+							 mCir._y - SIZE - 10,
 							 mCir._x + SIZE * mLife / LIFE_MAX, 
-							 mCir._y - SIZE),
+							 mCir._y - SIZE - 5),
 				   mPaint);
 	}
 

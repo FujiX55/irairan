@@ -49,7 +49,7 @@ public class GameDirector
 		}
 
 		// プレイヤーオブジェクトの登録
-		mPlayer = new Player();
+		mPlayer = new Player(c);
 		mTaskList.add(mPlayer);
 		
 		// ＦＰＳ表示オブジェクトの登録
