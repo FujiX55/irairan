@@ -8,8 +8,8 @@ import android.content.*;
 
 public class Player extends Task
 {
-	private Bitmap pic;
-	private int pic_w, pic_h;
+	private Bitmap mPic;
+	private int mPic_w, mPic_h;
 
 	private final static float MAX_SPEED = 20;		//移動する最大スピード
 	private final static float SIZE = 20;			//自機の大きさ
@@ -26,15 +26,17 @@ public class Player extends Task
 
 	public Player(Context c)
 	{
-		pic = BitmapFactory.decodeResource(c.getResources(), R.drawable.ic_launcher);
-		pic_w = pic.getWidth();
-		pic_h = pic.getHeight();
+		mPic = BitmapFactory.decodeResource(c.getResources(), R.drawable.ic_launcher);
+		mPic_w = mPic.getWidth();
+		mPic_h = mPic.getHeight();
 		
 		mCir = new Circle(240, 50, SIZE);	//(240,0)の位置にSIZEの大きさの円を作る
 		mPaint.setColor(Color.BLUE);      	//色を青に設定
 		mPaint.setAntiAlias(true);        	//エイリアスをオン
 //		mVec._y = 2;                      	//移動ベクトルを下に向ける
 		mLife = LIFE_MAX;
+		
+//		mVec._y = 1;
 	}
 
 	@Override
@@ -133,8 +135,36 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{
-		c.drawBitmap(pic, mCir._x - pic_w/2, mCir._y - pic_h/2, null);
+		Rect rcSrc = new Rect();
+		Rect rcDst = new Rect();
+		Matrix mat = new Matrix();
+		int w = mPic_w; 		// 描画する幅
+		int h = mPic_h; 		// 描画する高さ
+		int sx = 0; 			// 画像内の左上座標X
+		int sy = 0; 			// 画像内の左上座標Y
+		int dx = (int)mCir._x; 	// 描画先の左上座標X
+		int dy = (int)mCir._y; 	// 描画先の左上座標Y
+
+		double angle = 0; 		// 回転角度(度)
 		
+		angle = Math.atan2(mVec._y, mVec._x) * 180 / Math.PI;
+		
+		rcSrc.set(sx,sy,sx+w,sy+h);
+		rcDst.set(dx-w/2,dy-h/2, dx+w/2, dy+h/2);
+	
+		mat.setRotate((float)angle+90.0f, dx, dy);
+		c.save();
+//		c.setMatrix(mat);
+		c.concat(mat);
+		c.drawBitmap(mPic, rcSrc, rcDst, null);
+		c.restore();
+
+		// キャラ画像の表示
+//		c.drawBitmap( mPic, 
+//					  mCir._x - mPic_w/2,
+//					  mCir._y - mPic_h/2,
+//					  null );		
+//
 		if (false)
 		{
 			if (mDamaged)
@@ -156,11 +186,11 @@ public class Player extends Task
 
 		// 移動ベクトルの描画
 		mPaint.setColor(Color.GREEN);
-		c.drawLine(mCir._x, 
-				   mCir._y, 
-				   mCir._x + mVec._x * 10, 
-				   mCir._y + mVec._y * 10, 
-				   mPaint);
+		c.drawLine( mCir._x, 
+				    mCir._y, 
+				    mCir._x + mVec._x * 10, 
+				    mCir._y + mVec._y * 10, 
+				    mPaint );
 
 		// ライフの描画
 		c.drawRect(new RectF(mCir._x - SIZE * mLife / LIFE_MAX, 

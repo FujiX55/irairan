@@ -139,6 +139,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 				
 				mDirector.onDraw(c);
 				c.restore();
+
+//				c.scale(mScale, mScale);
 				
 				// ※元の座標に描画したいがうまく行ってない
 				c.translate(+mViewport.x, +mViewport.y);			
