@@ -20,6 +20,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 	private Viewport mViewport;
 
 	private Context mContext;
+	
+	private int mStage;
 
 	public GameView(Context context)
 	{
@@ -27,6 +29,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		getHolder().addCallback(this);
 
 		mContext = context;
+		
+		mStage = 1;
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		// 再始動
 		mDirector = null;
 		System.gc();
-		mDirector = new GameDirector(mContext, 2);		
+		mDirector = new GameDirector(mContext, mStage);		
 	}
 	
 	/**
@@ -135,12 +139,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 				// 自機の位置にあわせてビューポートを移動する
 				mViewport.update(x, y);
 				c.translate(-mViewport.x, -mViewport.y);			
-//				c.rotate(45.0f);
 				
 				mDirector.onDraw(c);
 				c.restore();
-
-//				c.scale(mScale, mScale);
 				
 				// ※元の座標に描画したいがうまく行ってない
 				c.translate(+mViewport.x, +mViewport.y);			
@@ -168,6 +169,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 				case MotionEvent.ACTION_DOWN:
 					// ゲーム再開
 					Log.d("GameView", "Restart!");
+					if (mDirector.getStatus() == GameDirector.eStatus.GAMECLEAR)
+					{
+						mStage = 2;
+					}
 					mRestart = true;
 					break;
 				default:

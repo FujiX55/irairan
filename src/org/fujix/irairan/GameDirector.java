@@ -8,7 +8,7 @@ import android.content.*;
 
 public class GameDirector
 {
-	private enum eStatus	//状態
+	public enum eStatus	//状態
 	{
 		NORMAL,		//普通
 		GAMEOVER,	//ゲームオーバー
@@ -54,7 +54,6 @@ public class GameDirector
 		
 		// ＦＰＳ表示オブジェクトの登録
 		mFps = new FpsController();
-//		mTaskList.add(mFps);
 		
 		// タッチ座標を初期化
 		mPtNow = new PointF(0, 0);
@@ -73,10 +72,6 @@ public class GameDirector
 			mPtNow    = null;
 			mPtOld    = null;
 			mTaskList = null;
-//			for (Barricade bar : mBarrList)
-//			{
-//				bar = null;
-//			}
 			mVec      = null;
 			mPlayer   = null;
 			mBarrList = null;
@@ -95,7 +90,7 @@ public class GameDirector
 
 		for (Barricade barr : mBarrList)		//障害物の数だけループ
 		{
-			Def.eHitCode code = barr.isHit(cir, mVec);//接触判定
+			Barricade.eHitCode code = barr.isHit(cir, mVec);//接触判定
 
 			switch (code)
 			{
@@ -215,6 +210,14 @@ public class GameDirector
 	}
 
 	/**
+	 * ゲーム状態の取得
+	 */
+	public eStatus getStatus()
+	{
+		return mStatus;
+	}
+
+	/**
 	 * 自機の移動
 	 */
 	public void movePlayer(PointF old, PointF now)
@@ -298,7 +301,7 @@ public class GameDirector
 
 		if (type.equals("OUT"))
 		{
-			mBarrList.add(new BarricadeSquare(x, y, w, h, new BConf(Barricade.eType.OUT)));
+			mBarrList.add(new BarricadeSquare(x, y, w, h, new BConf(Barricade.eType.DAMAGE)));
 		}
 		else
 		if (type.equals("GOAL"))

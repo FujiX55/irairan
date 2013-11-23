@@ -24,6 +24,10 @@ public class Player extends Task
 
 	private boolean mDamaged = false;
 
+	Rect mRcSrc = new Rect();
+	Rect mRcDst = new Rect();
+	Matrix mMat = new Matrix();
+	
 	public Player(Context c)
 	{
 		mPic = BitmapFactory.decodeResource(c.getResources(), R.drawable.ic_launcher);
@@ -52,7 +56,10 @@ public class Player extends Task
 			mSensorVec 	= null;
 			mVec 		= null;
 			mPaint 		= null;
-
+			mRcSrc 		= null;
+			mRcDst 		= null;
+			mMat 		= null;
+			
 			Log.d("Player", "PlayerDestruct");
 		}
 	}
@@ -135,9 +142,6 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{
-		Rect rcSrc = new Rect();
-		Rect rcDst = new Rect();
-		Matrix mat = new Matrix();
 		int w = mPic_w; 		// 描画する幅
 		int h = mPic_h; 		// 描画する高さ
 		int sx = 0; 			// 画像内の左上座標X
@@ -149,14 +153,13 @@ public class Player extends Task
 		
 		angle = Math.atan2(mVec._y, mVec._x) * 180 / Math.PI;
 		
-		rcSrc.set(sx,sy,sx+w,sy+h);
-		rcDst.set(dx-w/2,dy-h/2, dx+w/2, dy+h/2);
+		mRcSrc.set(sx,sy,sx+w,sy+h);
+		mRcDst.set(dx-w/2,dy-h/2, dx+w/2, dy+h/2);
 	
-		mat.setRotate((float)angle+90.0f, dx, dy);
+		mMat.setRotate((float)angle+90.0f, dx, dy);
 		c.save();
-//		c.setMatrix(mat);
-		c.concat(mat);
-		c.drawBitmap(mPic, rcSrc, rcDst, null);
+		c.concat(mMat);
+		c.drawBitmap(mPic, mRcSrc, mRcDst, null);
 		c.restore();
 
 		// キャラ画像の表示

@@ -9,10 +9,17 @@ public class Barricade extends Task
 
 	public enum eType
 	{ // 障害物のタイプ
-		OUT, // あたるとアウトなタイプ
-		GOAL // あたるとゴールなタイプ
-		}
-
+		DAMAGE, // あたるとダメージを受けるタイプ
+		GOAL 	// あたるとゴールなタイプ
+	}
+	
+	public enum eHitCode
+	{	// 接触状態
+		NO,		// 非接触
+		OUT,	// アウト
+		GOAL,	// ゴール
+	}
+	
 	protected PointF mCenter = new PointF(0, 0); 	// 図形の中心点
 	protected PointF mPt[]; 						// 図形の頂点
 	protected Paint  mPaint = new Paint(); 			// ペイント
@@ -31,7 +38,7 @@ public class Barricade extends Task
 		
 		switch (mType)
 		{
-			case OUT: // 接触してアウトな物
+			case DAMAGE: // 接触してアウトな物
 				mPaint.setColor(Color.RED); 	// 赤に
 				break;
 			case GOAL: // 接触してゴールな物
@@ -77,19 +84,19 @@ public class Barricade extends Task
 	}
 
 	// 接触しているかを問う。円cirが接触していれば接触した線分をvecに格納し、物体のタイプを返す。接触していなければNOを返す
-	public Def.eHitCode isHit(final Circle cir, Vec vec)
+	public Barricade.eHitCode isHit(final Circle cir, Vec vec)
 	{
 		if (DiagramCalcr.Collision(mPt, cir, vec) == true)
 		{	//頂点群_ptが示す各辺と円cirが接触していればベクトルをvecに入れてtrueを返す
 			switch (mType)
 			{
-				case OUT://アウトな線なら
-					return Def.eHitCode.OUT;
+				case DAMAGE://アウトな線なら
+					return Barricade.eHitCode.OUT;
 				case GOAL://ゴールな線なら
-					return Def.eHitCode.GOAL;
+					return Barricade.eHitCode.GOAL;
 			}
 		}
-		return Def.eHitCode.NO; //何も接触していない
+		return Barricade.eHitCode.NO; //何も接触していない
 	}
 
 	// 描画する
