@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">いらいらんズ</string>
+    <string name="app_name">イライランナーズ</string>
+    <string name="time_is_up">じかんぎれ</string>
+    <string name="game_over">ゲームおわり</string>
 	<color name="app_color">#000000</color>
 	<integer name="app_id">0</integer>
 

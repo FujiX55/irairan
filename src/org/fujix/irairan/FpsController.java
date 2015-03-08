@@ -5,11 +5,11 @@ import android.graphics.*;
 public class FpsController extends Task
 {
 	
-	private long  mStartTime = 0;            //測定開始時刻
-	private int   mCnt   = 0;                  //カウンタ
-	private Paint mPaint = new Paint();     //paint情報
-	private float mFps;                     //fps
-	private final static int N = 60;        //平均を取るサンプル数
+	private long  mStartTime = 0;			//測定開始時刻
+	private int   mCnt   = 0;				//カウンタ
+	private Paint mPaint = new Paint();		//paint情報
+	private float mFps;						//fps
+	private final static int RATE = 60;		//平均を取るサンプル数
 	private final static int FONT_SIZE = 20;//フォントサイズ
 
 	public FpsController()
@@ -25,10 +25,10 @@ public class FpsController extends Task
 		{ //1フレーム目なら時刻を記憶
 			mStartTime = System.currentTimeMillis();
 		}
-		if (mCnt == N)
+		if (RATE <= mCnt)
 		{ //60フレーム目なら平均を計算する
 			long t = System.currentTimeMillis();
-			mFps = 1000.f / ((t - mStartTime) / (float)N);
+			mFps = 1000.f / ((t - mStartTime) / (float)RATE);
 			mCnt = 0;
 			mStartTime = t;
 		}

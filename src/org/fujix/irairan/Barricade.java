@@ -8,7 +8,7 @@ public class Barricade extends Task
 	Path mPath = new Path();
 
 	public enum eType
-	{ // 障害物のタイプ
+	{	// 障害物のタイプ
 		DAMAGE, // あたるとダメージを受けるタイプ
 		GOAL 	// あたるとゴールなタイプ
 	}
@@ -84,19 +84,19 @@ public class Barricade extends Task
 	}
 
 	// 接触しているかを問う。円cirが接触していれば接触した線分をvecに格納し、物体のタイプを返す。接触していなければNOを返す
-	public Barricade.eHitCode isHit(final Circle cir, Vec vec)
+	public eHitCode isHit(final Circle cir, Vec vec)
 	{
 		if (DiagramCalcr.Collision(mPt, cir, vec) == true)
 		{	//頂点群_ptが示す各辺と円cirが接触していればベクトルをvecに入れてtrueを返す
 			switch (mType)
 			{
 				case DAMAGE://アウトな線なら
-					return Barricade.eHitCode.OUT;
+					return eHitCode.OUT;
 				case GOAL://ゴールな線なら
-					return Barricade.eHitCode.GOAL;
+					return eHitCode.GOAL;
 			}
 		}
-		return Barricade.eHitCode.NO; //何も接触していない
+		return eHitCode.NO; //何も接触していない
 	}
 
 	// 描画する

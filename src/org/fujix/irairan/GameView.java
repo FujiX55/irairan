@@ -65,7 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		mThread   = new Thread(this);             //別スレッドでメインループを作る
-		mDirector = new GameDirector(mContext, 1);
+		mDirector = new GameDirector(mContext, mStage);
 		mViewport = new Viewport(STG_WIDTH, STG_HEIGHT);
 
 		mThread.start();

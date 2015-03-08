@@ -28,6 +28,8 @@ public class Player extends Task
 	Rect mRcDst = new Rect();
 	Matrix mMat = new Matrix();
 	
+	private final boolean DEBUG_DRAW = false;
+	
 	public Player(Context c)
 	{
 		mPic = BitmapFactory.decodeResource(c.getResources(), R.drawable.ic_launcher);
@@ -37,10 +39,9 @@ public class Player extends Task
 		mCir = new Circle(240, 50, SIZE);	//(240,0)の位置にSIZEの大きさの円を作る
 		mPaint.setColor(Color.BLUE);      	//色を青に設定
 		mPaint.setAntiAlias(true);        	//エイリアスをオン
-//		mVec._y = 2;                      	//移動ベクトルを下に向ける
 		mLife = LIFE_MAX;
 		
-//		mVec._y = 1;
+		mVec._y = -0.001f;
 	}
 
 	@Override
@@ -108,10 +109,7 @@ public class Player extends Task
 	{
 		float x = now.x - old.x;
 		float y = now.y - old.y;
-//		x *= 0.5f;
-//		y *= 0.5f;
-//		mSensorVec._x = x < 0 ? -x * x : x * x;     //2乗して変化を大袈裟にする
-//		mSensorVec._y = y < 0 ? -y * y : y * y;     //2乗すると+になるので、負ならマイナスを付ける
+
 		mSensorVec._x = x;
 		mSensorVec._y = y;
 		mSensorVec.setLengthCap(MAX_SPEED);     	//ベクトルの大きさが最大スピード以上にならないようにする           
@@ -133,6 +131,7 @@ public class Player extends Task
 	{
 		setVec();       //移動ベクトルをセットする
 		Move();         //移動ベクトルが向いている方に動かす
+		
 		return true;
 	}
 
@@ -142,33 +141,31 @@ public class Player extends Task
 	@Override
 	public void onDraw(Canvas c)
 	{
-		int w = mPic_w; 		// 描画する幅
-		int h = mPic_h; 		// 描画する高さ
-		int sx = 0; 			// 画像内の左上座標X
-		int sy = 0; 			// 画像内の左上座標Y
-		int dx = (int)mCir._x; 	// 描画先の左上座標X
-		int dy = (int)mCir._y; 	// 描画先の左上座標Y
+		// キャラ画像の回転行列の生成
+		final int w  = mPic_w; 			// 描画する幅
+		final int h  = mPic_h; 			// 描画する高さ
+		final int sx = 0; 				// 画像内の左上座標X
+		final int sy = 0; 				// 画像内の左上座標Y
+		final int dx = (int)mCir._x; 	// 描画先の左上座標X
+		final int dy = (int)mCir._y; 	// 描画先の左上座標Y
 
-		double angle = 0; 		// 回転角度(度)
+		double angle = 0; 				// 回転角度(度)
 		
-		angle = Math.atan2(mVec._y, mVec._x) * 180 / Math.PI;
+		angle = Math.atan2(mVec._x, -mVec._y) * 180 / Math.PI;
 		
 		mRcSrc.set(sx,sy,sx+w,sy+h);
 		mRcDst.set(dx-w/2,dy-h/2, dx+w/2, dy+h/2);
-	
-		mMat.setRotate((float)angle+90.0f, dx, dy);
+
+		mMat.setRotate((float)angle, dx, dy);
+
+		// キャラ画像の表示
 		c.save();
 		c.concat(mMat);
 		c.drawBitmap(mPic, mRcSrc, mRcDst, null);
 		c.restore();
 
-		// キャラ画像の表示
-//		c.drawBitmap( mPic, 
-//					  mCir._x - mPic_w/2,
-//					  mCir._y - mPic_h/2,
-//					  null );		
-//
-		if (false)
+		// 当たり判定の描画
+		if ( DEBUG_DRAW )
 		{
 			if (mDamaged)
 			{	// ダメージ表現
@@ -206,13 +203,14 @@ public class Player extends Task
 	/**
 	 * 自機のライフを減らす
 	 */
-	public int damage()
+	public int onDamage()
 	{
 		if (0 < mLife)
 		{
 			mLife -= 10;
 		}
 		mDamaged = true;
+		
 		return mLife;
 	}
 }

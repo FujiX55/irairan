@@ -95,7 +95,7 @@ public class GameDirector
 			switch (code)
 			{
 				case OUT://接触したものが「アウト」なら
-					if (0 >= mPlayer.damage())
+					if (0 >= mPlayer.onDamage())
 					{
 						mStatus = eStatus.GAMEOVER;//アウト状態に					
 						return true;
